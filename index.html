@@ -1,50 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>marketdrop.hub | Official CS2 Weekly Drops</title>
+    <title>marketdrop.hub | Official Weekly Drops CS2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght=500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700;800&display=swap" rel="stylesheet">
+   
     <style>
         /* Fondo Animado Líquido (4 Colores en movimiento continuo) */
-        body { 
+        body {
             background: linear-gradient(-45deg, #05070b, #290a16, #241203, #0b1623);
             background-size: 300% 300%;
             animation: gradientAnimation 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-            color: #e2e8f0; 
-            font-family: 'Rajdhani', sans-serif; 
+            color: #e2e8f0;
+            font-family: 'Rajdhani', sans-serif;
             overflow-x: hidden;
         }
-
         @keyframes gradientAnimation {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
         /* Capa de partículas de fondo simuladas para dar más profundidad */
         .bg-particles {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            background-image: radial-gradient(rgba(244, 63, 94, 0.15) 1px, transparent 0), 
+            background-image: radial-gradient(rgba(244, 63, 94, 0.15) 1px, transparent 0),
                               radial-gradient(rgba(245, 158, 11, 0.1) 1px, transparent 0);
             background-size: 40px 40px;
             background-position: 0 0, 20px 20px;
             animation: particleShift 20s linear infinite;
             z-index: -1;
         }
-
         @keyframes particleShift {
             0% { transform: translateY(0) scale(1); }
             50% { transform: translateY(-20px) scale(1.05); opacity: 0.8; }
             100% { transform: translateY(0) scale(1); }
         }
-
         /* Animación de entrada para el contenido principal (Fade-in + Slide-up) */
         .main-content-fade {
             opacity: 0;
@@ -52,14 +48,12 @@
             animation: contentEntrance 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             animation-delay: 1.8s;
         }
-
         @keyframes contentEntrance {
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-
         /* Estilos del Intro Loader de Bienvenida */
         #intro-loader {
             position: fixed;
@@ -72,36 +66,31 @@
             justify-content: center;
             transition: all 0.6s cubic-bezier(0.76, 0, 0.24, 1);
         }
-
         .loader-glow-text {
             animation: textPulse 1.5s ease-in-out infinite alternate;
         }
-
         @keyframes textPulse {
             0% { filter: drop-shadow(0 0 5px rgba(244, 63, 94, 0.2)); opacity: 0.7; }
             100% { filter: drop-shadow(0 0 25px rgba(244, 63, 94, 0.8)); opacity: 1; }
         }
-
         /* Contenedores con efecto de cristal esmerilado */
         .bg-\[\#11141c\], .bg-\[\#10131b\], .bg-\[\#0b0d13\]\/95, #prime-info-panel {
             background: rgba(9, 12, 19, 0.8) !important;
             backdrop-filter: blur(16px);
             border-color: rgba(255, 255, 255, 0.04) !important;
         }
-        
+       
         .rarity-case { border-color: #5e98d9 !important; background: linear-gradient(180deg, rgba(14, 17, 24, 0.8) 0%, rgba(94, 152, 217, 0.08) 100%) !important; }
         .rarity-harlequin { border-color: #e11d48 !important; background: linear-gradient(180deg, rgba(14, 17, 24, 0.8) 0%, rgba(225, 29, 72, 0.08) 100%) !important; }
         .rarity-achroma { border-color: #94a3b8 !important; background: linear-gradient(180deg, rgba(14, 17, 24, 0.8) 0%, rgba(148, 163, 184, 0.08) 100%) !important; }
-
         .drop-card { transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); border-width: 1px; }
         .drop-card:hover { transform: translateY(-5px) scale(1.02); border-color: #f43f5e !important; box-shadow: 0 15px 30px -10px rgba(244, 63, 94, 0.4); }
-        
+       
         .price-flash { animation: flashHighlight 0.8s ease-out; }
         @keyframes flashHighlight {
             0% { background-color: rgba(244, 63, 94, 0.2); box-shadow: inset 0 0 10px rgba(244, 63, 94, 0.2); }
             100% { background-color: transparent; }
         }
-
         /* Transición de colapso para el panel Prime */
         #prime-info-panel {
             max-height: 0;
@@ -111,17 +100,14 @@
         #prime-info-panel.expanded {
             max-height: 600px;
         }
-
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #1c2331; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #f43f5e; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
-
     <!-- Capa de fondo con partículas dinámicas -->
     <div class="bg-particles"></div>
-
     <!-- INTRO ANIMADA (PANTALLA DE CARGA AL ENTRAR) -->
     <div id="intro-loader">
         <div class="text-center space-y-4">
@@ -135,10 +121,9 @@
             <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Loading analytical market flows...</p>
         </div>
     </div>
-
     <!-- CONTENIDO GENERAL CON ANIMACIÓN DE ENTRADA -->
     <div class="main-content-fade flex flex-col min-h-screen">
-        
+       
         <nav class="bg-[#0b0d13]/95 backdrop-blur-md border-b border-[#1a1f2c] px-6 py-4 flex items-center justify-between sticky top-0 z-50">
             <div class="flex items-center space-x-6 md:space-x-10 w-full lg:w-auto">
                 <div class="flex items-center space-x-2 font-extrabold text-2xl tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500 flex-shrink-0">
@@ -153,7 +138,7 @@
                         <i data-lucide="trending-up" class="w-4 h-4"></i> FORECAST ANALYSIS
                     </button>
                     <button onclick="switchTab('investments')" id="btn-investments" class="px-3 py-2 rounded-lg text-xs md:text-sm font-bold transition text-gray-400 hover:text-white flex items-center gap-1.5">
-                        <i data-lucide="line-chart" class="w-4 h-4"></i> ANALYSIS & INVESTMENTS
+                        <i data-lucide="line-chart" class="w-4 h-4"></i> ANALYSIS AND INVESTMENTS
                     </button>
                     <button onclick="switchTab('armory')" id="btn-armory" class="px-3 py-2 rounded-lg text-xs md:text-sm font-bold transition text-gray-400 hover:text-white flex items-center gap-1.5">
                         <i data-lucide="shield-alert" class="w-4 h-4"></i> ARMORY PASS
@@ -166,7 +151,6 @@
                 </span>
             </div>
         </nav>
-
         <!-- SECCIÓN E INFORMACIÓN PRIME STATUS -->
         <div class="max-w-7xl w-full mx-auto px-4 md:px-8 pt-6">
             <button onclick="togglePrimePanel()" id="btn-prime" class="w-full bg-gradient-to-r from-orange-500 via-rose-500 to-pink-600 hover:from-orange-400 hover:to-rose-400 text-white font-black py-4 px-6 rounded-2xl shadow-lg flex items-center justify-between tracking-wider border border-rose-400/20 transition duration-300">
@@ -179,19 +163,18 @@
                     <i data-lucide="chevron-down" id="prime-icon-arrow" class="w-4 h-4 transition-transform duration-300"></i>
                 </div>
             </button>
-
             <div id="prime-info-panel" class="mt-4 border border-rose-500/30 rounded-2xl opacity-0">
                 <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                     <div class="md:col-span-2 space-y-4">
-                        <h3 class="text-2xl font-black text-rose-400 tracking-wide uppercase">Why upgrade to a Prime Account?</h3>
+                        <h3 class="text-2xl font-black text-rose-400 tracking-wide uppercase">Why upgrade to Prime Account?</h3>
                         <p class="text-sm text-gray-300 leading-relaxed">
-                            Prime status is a permanent upgrade for CS2. Players with Prime status are matched exclusively with other Prime users across all online modes, drastically reducing encounters with cheaters or annoying secondary accounts.
+                            Prime status is a permanent upgrade for CS2. Players with Prime status are matched exclusively with other Prime users in all online modes, drastically reducing encounters with cheaters or annoying smurf accounts.
                         </p>
                         <ul class="space-y-2 text-sm text-gray-200 font-semibold">
-                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i> Exclusive access to the Weekly Drop Care Package (Free Skins and Cases!).</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i> Exclusive access to the Weekly Drop Package (free Skins and Cases!).</li>
                             <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i> Access to Premier Mode.</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i> Earn Experience Points (XP) and Service Medals.</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i> Matchmaking within a much cleaner gaming ecosystem.</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i> Earning Experience Points (XP) and Service Medals.</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i> Matchmaking in a much cleaner gaming ecosystem.</li>
                         </ul>
                         <div class="pt-2">
                             <a href="https://store.steampowered.com/app/730/CounterStrike_2/" target="_blank" class="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-black font-black px-6 py-3 rounded-xl tracking-wider text-sm transition shadow-md shadow-green-900/30">
@@ -205,9 +188,7 @@
                 </div>
             </div>
         </div>
-
         <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8">
-
             <!-- SECCIÓN 1: DROPS SEMANALES -->
             <section id="sec-drops" class="space-y-6">
                 <div class="bg-[#11141c] border border-[#1e2433] p-6 rounded-2xl shadow-xl">
@@ -215,55 +196,50 @@
                         <i data-lucide="sparkles" class="text-rose-400"></i> New Weekly Drop Collections
                     </h2>
                     <p class="text-sm text-gray-400 mt-2 leading-relaxed">
-                        Prices and probabilities of <span class="text-rose-400 font-semibold">Drops</span> and <span class="text-slate-400 font-semibold">Cases</span> for market analysis.
+                        Prices and drop probabilities for <span class="text-rose-400 font-semibold">Drops</span> and <span class="text-slate-400 font-semibold">Cases</span> for market analysis.
                     </p>
                 </div>
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="drops-grid">
                 </div>
             </section>
-
             <!-- SECCIÓN 2: ANALISIS PREVISTO -->
             <section id="sec-analytics" class="hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="bg-[#11141c] border border-[#1e2433] p-5 rounded-2xl space-y-4 shadow-xl h-fit">
                         <h3 class="text-base font-bold text-white border-l-4 border-rose-500 pl-2 uppercase tracking-wide">Estimated Market</h3>
-                        <p class="text-xs text-gray-400">Select an item to analyze the simulated stock price fluctuation.</p>
-                        
+                        <p class="text-xs text-gray-400">Select an item to analyze the simulated post-release price fluctuation.</p>
+                       
                         <div class="space-y-2 max-h-[420px] overflow-y-auto pr-1" id="cases-selector-list">
                         </div>
                     </div>
-
                     <div class="bg-[#11141c] border border-[#1e2433] p-6 rounded-2xl lg:col-span-2 space-y-4 shadow-xl flex flex-col justify-between">
                         <div class="flex justify-between items-center border-b border-[#1e2433] pb-4">
                             <div>
                                 <h2 id="chart-case-name" class="text-xl font-black text-white tracking-wide">Select an item</h2>
-                                <p class="text-xs text-gray-400 uppercase tracking-wider">Simulated post-launch history</p>
+                                <p class="text-xs text-gray-400 uppercase tracking-wider">Simulated post-release history</p>
                             </div>
                             <div class="text-right">
                                 <div id="chart-case-price" class="text-2xl font-black text-rose-400">$0.00</div>
                                 <span class="text-[11px] font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded">Live Simulation</span>
                             </div>
                         </div>
-                        
+                       
                         <div class="relative w-full h-80 my-2">
                             <canvas id="analyticsChart"></canvas>
                         </div>
                     </div>
                 </div>
             </section>
-
             <!-- SECCIÓN 3: ANÁLISIS E INVERSIONES -->
             <section id="sec-investments" class="hidden space-y-6">
                 <div class="bg-[#11141c] border border-[#1e2433] p-6 rounded-2xl shadow-xl">
                     <h2 class="text-xl font-black text-white tracking-wide uppercase flex items-center gap-2">
-                        <i data-lucide="line-chart" class="text-rose-400"></i> CS2 Investor Academy
+                        <i data-lucide="line-chart" class="text-rose-400"></i> CS2 Investors Academy
                     </h2>
                     <p class="text-sm text-gray-400 mt-2 leading-relaxed">
-                        Understand Valve's market cycles, case supply and demand flows, and learn how to read charts to maximize your Steam balance or cryptocurrency.
+                        Understand Valve's market cycles, case supply and demand flows, and learn to read charts to maximize your Steam balance or cryptocurrency.
                     </p>
                 </div>
-
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-[#11141c] border border-emerald-500/20 p-6 rounded-2xl space-y-4 shadow-xl">
                         <div class="flex items-center gap-2 border-b border-[#1e2433] pb-3">
@@ -271,13 +247,13 @@
                                 <i data-lucide="trending-down" class="text-emerald-400 w-5 h-5"></i>
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold text-white uppercase">When to buy (Accumulation Zones)</h3>
-                                <p class="text-xs text-emerald-400 font-semibold tracking-wider">Market bottoms and panic selling</p>
+                                <h3 class="text-lg font-bold text-white uppercase">When to Buy (Accumulation Zones)</h3>
+                                <p class="text-xs text-emerald-400 font-semibold tracking-wider">Market lows and panic points</p>
                             </div>
                         </div>
                         <div class="space-y-3 text-sm text-gray-300">
-                            <p><strong class="text-white">1. Steam Sales & Operations:</strong> When Valve releases a new pass or sale, users sell cheap cases to buy new content. Prices drop by <span class="text-emerald-400 font-bold">15%-30%</span>.</p>
-                            <p><strong class="text-white">2. Oversupply cycle:</strong> The ideal buying point for cases in active circulation is when the massive post-launch drop curve flattens out completely (month 6 onwards).</p>
+                            <p><strong class="text-white">1. Steam Sales and Operations:</strong> When Valve releases a new pass or sale, users sell cases cheaply to buy new content. Prices drop <span class="text-emerald-400 font-bold">15%-30%</span>.</p>
+                            <p><strong class="text-white">2. Oversupply cycle:</strong> The ideal buying point for active circulation cases is when the massive post-release drop curve completely flattens (month 6 onwards).</p>
                         </div>
                         <div class="bg-black/30 border border-[#1e2433] p-4 rounded-xl">
                             <div class="h-24 flex items-end gap-1.5 pt-4 border-b border-gray-800">
@@ -287,20 +263,19 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="bg-[#11141c] border border-rose-500/20 p-6 rounded-2xl space-y-4 shadow-xl">
                         <div class="flex items-center gap-2 border-b border-[#1e2433] pb-3">
                             <div class="bg-rose-500/10 p-2 rounded-lg border border-rose-500/20">
                                 <i data-lucide="trending-up" class="text-rose-400 w-5 h-5"></i>
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold text-white uppercase">When to sell (Profit Taking)</h3>
-                                <p class="text-xs text-rose-400 font-semibold tracking-wider">All-Time Highs (ATH) & Hype</p>
+                                <h3 class="text-lg font-bold text-white uppercase">When to Sell (Profit Taking)</h3>
+                                <p class="text-xs text-rose-400 font-semibold tracking-wider">All-Time Highs (ATH) and Hype</p>
                             </div>
                         </div>
                         <div class="space-y-3 text-sm text-gray-300">
-                            <p><strong class="text-white">1. Moving to the "Rare Pool":</strong> When a case is discontinued from active rotation, its drop rate falls to <span class="text-rose-400 font-bold">0.03%</span>. Its value immediately spikes due to the drastic supply cut.</p>
-                            <p><strong class="text-white">2. Big Update Hype:</strong> Massive content patches bring back nostalgic players who buy keys in bulk to open old cases, temporarily boosting their value.</p>
+                            <p><strong class="text-white">1. Jump to the "Rare Pool":</strong> When a case is removed from the active rotation, its drop rate drops to <span class="text-rose-400 font-bold">0.03%</span>. Its value rises immediately due to the drastic supply cut.</p>
+                            <p><strong class="text-white">2. Major Update Hype:</strong> Massive content patches bring nostalgic players who buy keys en masse to open old cases, temporarily increasing their value.</p>
                         </div>
                         <div class="bg-black/30 border border-[#1e2433] p-4 rounded-xl">
                             <div class="h-24 flex items-end gap-1.5 pt-4 border-b border-gray-800">
@@ -312,69 +287,63 @@
                     </div>
                 </div>
             </section>
-
             <!-- SECCIÓN 4: PASE DE ARMERÍA -->
             <section id="sec-armory" class="hidden space-y-6">
                 <div class="bg-[#11141c] border border-[#1e2433] p-6 rounded-2xl shadow-xl">
                     <div class="space-y-2">
                         <h2 class="text-xl font-black text-white tracking-wide uppercase flex items-center gap-2">
-                            <i data-lucide="shield-alert" class="text-rose-400"></i> Maximize Profits with The Armory Pass
+                            <i data-lucide="shield-alert" class="text-rose-400"></i> Maximize Profits with the Armory Pass
                         </h2>
                         <p class="text-sm text-gray-400 leading-relaxed">
-                            Deep analysis of Valve's cumulative credit system. Learn how to calculate the cost per credit and make your investment profitable.
+                            In-depth analysis of Valve's cumulative credit system. Learn how to calculate the cost per credit and make your investment profitable.
                         </p>
                     </div>
                 </div>
-
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="bg-[#11141c] border border-[#1e2433] p-5 rounded-2xl space-y-3 shadow-xl">
                         <div class="flex items-center gap-2 border-b border-[#1e2433] pb-2 text-orange-400 font-bold uppercase text-sm">
                             <i data-lucide="calculator" class="w-4 h-4"></i> Cost-Credit Ratio
                         </div>
                         <p class="text-xs text-gray-400 leading-relaxed">
-                            Each pass awards a maximum of **40 credits** through casual or competitive play. To maximize profit, advanced investors purchase up to a limit of <span class="text-white font-bold">5 simultaneous passes</span> on a single account to multiply the credits earned per experience point by five.
+                            Each pass grants a maximum of **40 credits** by playing casually or competitively. To maximize benefit, advanced investors buy up to the limit of <span class="text-white font-bold">5 simultaneous passes</span> on a single account to multiply by five the credits earned per experience point.
                         </p>
                         <div class="bg-black/30 p-3 rounded-lg border border-[#1f2635] text-center text-xs">
-                            <span class="block text-gray-500 uppercase font-black text-[10px]">Account Limit</span>
+                            <span class="block text-gray-500 uppercase font-black text-[10px]">Limit per Account</span>
                             <span class="text-lg font-black text-orange-400">5 Passes = 200 Credits</span>
                         </div>
                     </div>
-
                     <div class="bg-[#11141c] border border-[#1e2433] p-5 rounded-2xl space-y-3 shadow-xl">
                         <div class="flex items-center gap-2 border-b border-[#1e2433] pb-2 text-cyan-400 font-bold uppercase text-sm">
                             <i data-lucide="shopping-bag" class="w-4 h-4"></i> Redemption Strategy (Skins vs Cases)
                         </div>
                         <p class="text-xs text-gray-400 leading-relaxed">
-                            A common mistake is spending credits on random collections looking for a red skin. Historical math proves that playing it safe generates higher continuous returns:
+                            The common mistake is spending credits on random collections looking for the red skin. Historical math shows that playing it safe generates more consistent returns:
                         </p>
                         <ul class="text-[11px] text-gray-300 space-y-1 font-semibold">
                             <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> **Armory Cases:** Low credit cost, high immediate liquidity.</li>
-                            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> **Charms:** Profitability depends on the initial level of hype.</li>
-                            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> **Limited Edition Skins:** Hold them long-term without applying stickers.</li>
+                            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> **Keychains (Charms):** Their profitability depends on the initial hype level.</li>
+                            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> **Limited Edition Skins:** Keep them long-term without applying stickers.</li>
                         </ul>
                     </div>
-
                     <div class="bg-[#11141c] border border-[#1e2433] p-5 rounded-2xl space-y-3 shadow-xl">
                         <div class="flex items-center gap-2 border-b border-[#1e2433] pb-2 text-purple-400 font-bold uppercase text-sm">
                             <i data-lucide="hourglass" class="w-4 h-4"></i> XP per Hour Optimization
                         </div>
                         <p class="text-xs text-gray-400 leading-relaxed">
-                            Credits are unlocked by earning raw experience. The most optimal way to farm these credits without wasting time in long competitive matches is by playing intensely in fast game modes (like **Arms Race / Massive Deathmatch**) during days with an active weekly XP bonus.
+                            Credits are unlocked by earning pure experience. The most optimal way to farm these credits without wasting time on long competitive matches is by playing intensively in fast game modes (such as **Arms Race / Massive Deathmatch**) during days with the weekly XP bonus active.
                         </p>
                         <div class="bg-black/30 p-2.5 rounded-lg border border-[#1f2635] flex items-center justify-between text-xs font-bold">
-                            <span class="text-gray-400">Fastest Route:</span>
+                            <span class="text-gray-400">Fastest route:</span>
                             <span class="text-purple-400">Official Deathmatch + Weekly Bonus</span>
                         </div>
                     </div>
                 </div>
             </section>
         </main>
-
         <footer class="bg-[#05060a]/90 backdrop-blur-md border-t border-[#121620] py-6 text-center text-xs text-gray-500 mt-auto">
             <p>&copy; 2026 marketdrop.hub - Best investments</p>
         </footer>
     </div>
-
     <script>
         let dropItems = [
             { id: "gallery", name: "Gallery Case", type: "Weapon Case", rarity: "case", price: 1.41, chance: "20%", pool: "Container", history: [1.38, 1.45, 1.29, 1.39, 1.45, 1.42], img: "gallery.png", marketUrl: "https://steamcommunity.com/market/listings/730/Gallery%20Case" },
@@ -382,40 +351,35 @@
             { id: "revolution", name: "Revolution Case", type: "Weapon Case", rarity: "case", price: 0.35, chance: "25%", pool: "Container", history: [0.59, 0.50, 0.55, 0.45, 0.41, 0.35], img: "revolution.png", marketUrl: "https://steamcommunity.com/market/listings/730/Revolution%20Case" },
             { id: "recoil", name: "Recoil Case", type: "Weapon Case", rarity: "case", price: 0.22, chance: "10%", pool: "Container", history: [0.80, 0.65, 0.45, 0.32, 0.28, 0.22], img: "recoil.png", marketUrl: "https://steamcommunity.com/market/listings/730/Recoil%20Case" },
             { id: "dreams", name: "Dreams & Nightmares Case", type: "Weapon Case", rarity: "case", price: 1.72, chance: "5%", pool: "Container", history: [1.90, 1.60, 1.60, 1.70, 1.88, 1.72], img: "dreams.png", marketUrl: "https://steamcommunity.com/market/listings/730/Dreams%20%26%20Nightmares%20Case" },
-            { id: "ak_breakthrough", name: "AK-47 | Breakthrough", type: "Achroma Collection", rarity: "achroma", price: 20.50, chance: "0.8%", pool: "Rare (Black/White)", history: [12.0, 18.5, 22.0, 25.0, 22.5, 19.5], img: "ak_breakthrough.png", marketUrl: "https://steamcommunity.com/market/search?appid=730&q=AK-47+Breakthrough" },
+            { id: "ak_breakthrough", name: "AK-47 | Breakthrough", type: "Achroma Collection", rarity: "achroma", price: 20.50, chance: "0.8%", pool: "Rare (White/Black)", history: [12.0, 18.5, 22.0, 25.0, 22.5, 19.5], img: "ak_breakthrough.png", marketUrl: "https://steamcommunity.com/market/search?appid=730&q=AK-47+Breakthrough" },
             { id: "glock_trace", name: "Glock-18 | Trace Lock", type: "Achroma Collection", rarity: "achroma", price: 11.20, chance: "1.5%", pool: "Monochromatic", history: [5.0, 8.2, 10.5, 9.0, 11.8, 10.2], img: "glock_trace_lock.png", marketUrl: "https://steamcommunity.com/market/search?appid=730&q=Glock-18+Trace+Lock" },
             { id: "awp_exothermic", name: "AWP | Exothermic", type: "Harlequin Collection", rarity: "harlequin", price: 20.00, chance: "0.05%", pool: "Extremely Rare", history: [20.0, 21.0, 23.0, 18.0, 19.0, 21.0], img: "awp_exothermic.png", marketUrl: "https://steamcommunity.com/market/search?appid=730&q=AWP+Exothermic" },
-            { id: "usp_sleeping", name: "USP-S | Sleeping Potion", type: "Harlequin Collection", rarity: "harlequin", price: 21.00, chance: "0.2%", pool: "Weekly Covert", history: [20.0, 22.0, 19.0, 17.0, 21.5, 20.5], img: "usp_sleeping_potion.png", marketUrl: "https://steamcommunity.com/market/search?appid=730&q=USP-S+Sleeping+Potion" }
+            { id: "usp_sleeping", name: "USP-S | Sleeping Potion", type: "Harlequin Collection", rarity: "harlequin", price: 21.00, chance: "0.2%", pool: "Covert Weekly", history: [20.0, 22.0, 19.0, 17.0, 21.5, 20.5], img: "usp_sleeping_potion.png", marketUrl: "https://steamcommunity.com/market/search?appid=730&q=USP-S+Sleeping+Potion" }
         ];
-
         let selectedCaseId = "gallery";
         let chartInstance = null;
-
         function handleIntroLoader() {
             const progressBar = document.getElementById('intro-progress-bar');
             const loader = document.getElementById('intro-loader');
-            
+           
             setTimeout(() => {
                 progressBar.style.width = '100%';
             }, 100);
-
             setTimeout(() => {
                 loader.style.opacity = '0';
                 loader.style.transform = 'scale(1.05)';
                 loader.style.pointerEvents = 'none';
             }, 1400);
-
             setTimeout(() => {
                 loader.remove();
             }, 2000);
         }
-
         function switchTab(tabId) {
             const sections = ['drops', 'analytics', 'investments', 'armory'];
             sections.forEach(sec => {
                 const sectionEl = document.getElementById(`sec-${sec}`);
                 const btnEl = document.getElementById(`btn-${sec}`);
-                
+               
                 if (sec === tabId) {
                     sectionEl.classList.remove('hidden');
                     if (sec === 'drops') {
@@ -428,17 +392,15 @@
                     btnEl.className = "px-3 py-2 rounded-lg text-xs md:text-sm font-bold transition text-gray-400 hover:text-white flex items-center gap-1.5";
                 }
             });
-
             if (tabId === 'analytics') {
                 setTimeout(() => { selectCaseForChart(selectedCaseId); }, 50);
             }
         }
-
         function togglePrimePanel() {
             const panel = document.getElementById('prime-info-panel');
             const arrow = document.getElementById('prime-icon-arrow');
             const btnText = document.getElementById('prime-btn-text');
-            
+           
             if (panel.classList.contains('expanded')) {
                 panel.classList.remove('expanded');
                 panel.classList.add('opacity-0');
@@ -451,7 +413,6 @@
                 btnText.innerText = "HIDE";
             }
         }
-
         function renderDropsGrid() {
             const grid = document.getElementById('drops-grid');
             grid.innerHTML = '';
@@ -460,6 +421,155 @@
                 let btnColorClass = "text-sky-400 hover:bg-sky-500/10 border-sky-500/20";
                 if (item.rarity === 'harlequin') btnColorClass = "text-rose-400 hover:bg-rose-500/10 border-rose-500/20";
                 if (item.rarity === 'achroma') btnColorClass = "text-slate-400 hover:bg-slate-500/10 border-slate-500/20";
-
                 const card = document.createElement('div');
-                card.className =
+                card.className = `drop-card rarity-${item.rarity} bg-[#10131b] rounded-2xl p-4 flex flex-col justify-between relative border border-[#1b212f]`;
+                card.innerHTML = `
+                    <div class="w-full flex justify-between items-center text-[10px] font-extrabold tracking-wider pr-8">
+                        <span class="bg-[#151923] text-gray-400 px-2 py-0.5 rounded border border-gray-800">${item.type}</span>
+                        <span class="text-rose-400">${item.pool}</span>
+                    </div>
+                   
+                    <!-- BOTÓN VER EN STEAM SITUADO EN LA ESQUINA SUPERIOR DERECHA -->
+                    <a href="${item.marketUrl}" target="_blank" class="absolute top-3.5 right-3.5 p-1.5 rounded-lg border bg-black/40 transition duration-200 ${btnColorClass}" title="View on Steam Market">
+                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                    </a>
+                    <div class="my-4 h-24 flex items-center justify-center overflow-hidden">
+                        <img src="${item.img}" alt="${item.name}" class="max-h-full max-w-full object-contain filter drop-shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/120x120/10131b/ffffff?text=Error+Image'">
+                    </div>
+                    <div class="w-full text-center space-y-1">
+                        <div class="text-xs font-bold text-gray-200 truncate">${item.name}</div>
+                        <div class="flex justify-between items-center bg-[#090b10] px-2 py-1.5 rounded-lg border border-[#151a24] mt-2 w-full">
+                            <div class="text-left">
+                                <span class="block text-[9px] text-gray-500 uppercase font-bold tracking-wider">Probability</span>
+                                <span class="text-xs font-extrabold text-cyan-400">${item.chance}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="block text-[9px] text-gray-500 uppercase font-bold tracking-wider">Estimated Price</span>
+                                <span id="price-grid-${item.id}" class="text-xs font-black text-rose-400">$${item.price.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            // Re-inicializar iconos de Lucide tras inyectar elementos al DOM
+            lucide.createIcons();
+        }
+        function renderSelectorList() {
+            const listContainer = document.getElementById('cases-selector-list');
+            listContainer.innerHTML = '';
+            dropItems.forEach(item => {
+                const btn = document.createElement('button');
+                btn.onclick = () => selectCaseForChart(item.id);
+                btn.id = `selector-${item.id}`;
+                btn.className = `w-full flex items-center justify-between p-3 rounded-xl border border-[#1b212f] bg-[#0c0f16]/60 hover:bg-[#131822] transition text-left ${item.id === selectedCaseId ? 'border-rose-500/40 bg-[#161a26]' : ''}`;
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3 truncate">
+                        <div class="w-8 h-8 flex-shrink-0 bg-black/40 rounded-lg p-1 border border-white/5 flex items-center justify-center">
+                            <img src="${item.img}" alt="" class="max-h-full max-w-full object-contain" onerror="this.onerror=null; this.src='https://placehold.co/40x40/10131b/ffffff?text=Item'">
+                        </div>
+                        <div class="truncate">
+                            <span class="block text-xs font-bold text-gray-200 truncate">${item.name}</span>
+                            <span class="block text-[10px] text-gray-500 truncate">${item.type}</span>
+                        </div>
+                    </div>
+                    <div class="text-right flex-shrink-0 pl-2">
+                        <span id="price-list-${item.id}" class="text-sm font-black text-rose-400">$${item.price.toFixed(2)}</span>
+                    </div>
+                `;
+                listContainer.appendChild(btn);
+            });
+        }
+        function selectCaseForChart(caseId) {
+            selectedCaseId = caseId;
+            const item = dropItems.find(i => i.id === caseId);
+            if (!item) return;
+            // Actualizar UI del Selector
+            dropItems.forEach(i => {
+                const el = document.getElementById(`selector-${i.id}`);
+                if (el) {
+                    if (i.id === caseId) {
+                        el.classList.add('border-rose-500/40', 'bg-[#161a26]');
+                    } else {
+                        el.classList.remove('border-rose-500/40', 'bg-[#161a26]');
+                    }
+                }
+            });
+            // Actualizar cabecera de gráfica
+            document.getElementById('chart-case-name').innerText = item.name;
+            document.getElementById('chart-case-price').innerText = `$${item.price.toFixed(2)}`;
+            // Renderizar la gráfica Chart.js
+            const ctx = document.getElementById('analyticsChart').getContext('2d');
+           
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(244, 63, 94, 0.25)');
+            gradient.addColorStop(1, 'rgba(244, 63, 94, 0.0)');
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Current'],
+                    datasets: [{
+                        label: 'Price ($)',
+                        data: item.history,
+                        borderColor: '#f43f5e',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#f43f5e',
+                        pointHoverRadius: 6,
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: gradient
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#64748b', font: { family: 'Rajdhani', weight: 'bold' } } },
+                        y: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#64748b', font: { family: 'Rajdhani', weight: 'bold' } } }
+                    }
+                }
+            });
+        }
+        // Bucle de simulación para fluctuaciones en vivo
+        function startLiveMarketSimulation() {
+            setInterval(() => {
+                dropItems.forEach(item => {
+                    const changePercent = (Math.random() * 5 - 2.5) / 100; // Variación entre -2.5% y +2.5%
+                    item.price += item.price * changePercent;
+                    if (item.price < 0.03) item.price = 0.03;
+                    item.history[item.history.length - 1] = item.price;
+                    const gridPrice = document.getElementById(`price-grid-${item.id}`);
+                    const listPrice = document.getElementById(`price-list-${item.id}`);
+                    if (gridPrice) {
+                        gridPrice.innerText = `$${item.price.toFixed(2)}`;
+                        gridPrice.classList.add('price-flash');
+                        setTimeout(() => gridPrice.classList.remove('price-flash'), 800);
+                    }
+                    if (listPrice) {
+                        listPrice.innerText = `$${item.price.toFixed(2)}`;
+                    }
+                    if (item.id === selectedCaseId) {
+                        const chartPrice = document.getElementById('chart-case-price');
+                        if (chartPrice) chartPrice.innerText = `$${item.price.toFixed(2)}`;
+                        if (chartInstance) {
+                            chartInstance.data.datasets[0].data = item.history;
+                            chartInstance.update('none');
+                        }
+                    }
+                });
+            }, 4000);
+        }
+        // Inicializador de la App
+        window.addEventListener('DOMContentLoaded', () => {
+            handleIntroLoader();
+            renderDropsGrid();
+            renderSelectorList();
+            startLiveMarketSimulation();
+        });
+    </script>
+</body>
+</html>
