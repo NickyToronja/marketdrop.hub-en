@@ -3,573 +3,781 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>marketdrop.hub | Official Weekly Drops CS2</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700;800&display=swap" rel="stylesheet">
-   
+    <title>SDJ | Stream Center Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- LIBRERÍA DE SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
-        /* Fondo Animado Líquido (4 Colores en movimiento continuo) */
+        :root {
+            --bg-deep: #0a0a0c; --bg-stripe: #121216; --card-bg: #1a1a20;
+            --accent-neon: #7f5af0; --discord-color: #5865F2; --f1-red: #e10600;
+            --dazn-blue: #3498db; --nba-orange: #ff9800; --foot-green: #2ecc71;
+            --movistar-blue: #00bcff; --champions-blue: #001e4e; 
+            --text-main: #ffffff; --transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --live-red: #ff0000; --fav-gold: #f1c40f; --Ace-search: #b4dd1e;
+        }
+
+        @keyframes stripe-move { 0% { background-position: 0 0; } 100% { background-position: 100px 100px; } }
+        
         body {
-            background: linear-gradient(-45deg, #05070b, #290a16, #241203, #0b1623);
-            background-size: 300% 300%;
-            animation: gradientAnimation 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-            color: #e2e8f0;
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Poppins', sans-serif; background-color: var(--bg-deep); color: var(--text-main);
+            margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+            background-image: linear-gradient(135deg, var(--bg-stripe) 25%, transparent 25%, transparent 50%, var(--bg-stripe) 50%, var(--bg-stripe) 75%, transparent 75%, transparent);
+            background-size: 80px 80px; animation: stripe-move 12s linear infinite;
             overflow-x: hidden;
         }
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+
+        header {
+            width: 100%; background: rgba(10, 10, 12, 0.95); backdrop-filter: blur(10px);
+            padding: 20px 0; text-align: center; border-bottom: 2px solid var(--accent-neon);
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; padding-left: 40px; padding-right: 40px;
         }
-        /* Capa de partículas de fondo simuladas para dar más profundidad */
-        .bg-particles {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            background-image: radial-gradient(rgba(244, 63, 94, 0.15) 1px, transparent 0),
-                              radial-gradient(rgba(245, 158, 11, 0.1) 1px, transparent 0);
-            background-size: 40px 40px;
-            background-position: 0 0, 20px 20px;
-            animation: particleShift 20s linear infinite;
-            z-index: -1;
+
+        .logo-sdj { height: 60px; border-radius: 12px; border: 1px solid var(--accent-neon); }
+        
+        .header-auth { display: flex; align-items: center; gap: 15px; }
+        .user-pill { background: var(--card-bg); border: 1px solid var(--accent-neon); padding: 6px 14px; border-radius: 30px; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .user-pill:hover { background: #25252e; }
+        .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-neon); object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; }
+
+        .container { width: 100%; max-width: 1200px; padding: 30px 20px; box-sizing: border-box; z-index: 10; }
+        h1 { font-family: 'Oswald'; font-size: 3rem; text-align: center; margin: 0 0 20px 0; letter-spacing: 2px; }
+
+        .controls-wrapper { display: flex; flex-direction: column; gap: 20px; align-items: center; margin-bottom: 50px; width: 100%; }
+        .search-input {
+            width: 100%; max-width: 600px; padding: 15px 25px; border-radius: 30px; border: 2px solid #333;
+            background: var(--card-bg); color: white; font-size: 1rem; outline: none; transition: 0.3s;
         }
-        @keyframes particleShift {
-            0% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-20px) scale(1.05); opacity: 0.8; }
-            100% { transform: translateY(0) scale(1); }
+        .search-input:focus { border-color: var(--accent-neon); box-shadow: 0 0 15px rgba(127, 90, 240, 0.3); }
+
+        .btn-group { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .btn-main {
+            padding: 12px 22px; border-radius: 50px; text-decoration: none; font-weight: 800;
+            text-transform: uppercase; font-size: 0.75rem; transition: var(--transition);
+            display: flex; align-items: center; gap: 8px; color: white; border: none; cursor: pointer;
         }
-        /* Animación de entrada para el contenido principal (Fade-in + Slide-up) */
-        .main-content-fade {
-            opacity: 0;
-            transform: translateY(15px);
-            animation: contentEntrance 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation-delay: 1.8s;
+        .btn-discord { background: var(--discord-color); }
+        .btn-download { background: var(--f1-red); }
+        .btn-updates { background: #444; border: 1px solid #666; }
+        .btn-fav-filter { background: #222; border: 1px solid #444; }
+        .btn-fav-filter.active { background: var(--fav-gold); color: #000; }
+        .btn-ace-search { background: var(--Ace-search); color: #000; }
+        .btn-login-open { background: var(--accent-neon); }
+
+        #help-banner {
+            display: none; width: 100%; max-width: 1100px; box-sizing: border-box;
+            background: linear-gradient(135deg, rgba(180, 221, 30, 0.15) 25%, transparent 25%, transparent 50%, rgba(180, 221, 30, 0.15) 50%, rgba(180, 221, 30, 0.15) 75%, transparent 75%, transparent);
+            background-size: 40px 40px; border: 2px dashed var(--Ace-search); border-radius: 25px; padding: 20px; text-align: center;
         }
-        @keyframes contentEntrance {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+
+        .category-section { margin-bottom: 50px; }
+        .category-title {
+            font-family: 'Oswald'; font-size: 1.6rem; text-transform: uppercase;
+            display: flex; align-items: center; gap: 15px; margin-bottom: 25px;
+            padding-left: 15px; border-left: 5px solid var(--accent-neon);
         }
-        /* Estilos del Intro Loader de Bienvenida */
-        #intro-loader {
-            position: fixed;
-            inset: 0;
-            background: #06080c;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+        .cat-motor { border-color: var(--f1-red); color: var(--f1-red); }
+        .cat-futbol { border-color: var(--foot-green); color: var(--foot-green); }
+        .cat-deportes { border-color: var(--movistar-blue); color: var(--movistar-blue); }
+        .cat-usa { border-color: var(--nba-orange); color: var(--nba-orange); }
+        .cat-fun { border-color: var(--accent-neon); color: var(--accent-neon); }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .card { background: var(--card-bg); border-radius: 24px; overflow: hidden; border: 1px solid #222; transition: var(--transition); position: relative; }
+        .card:hover { transform: translateY(-5px); border-color: #444; }
+        .fav-btn { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.6); border: none; color: #fff; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; z-index: 5; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+        .fav-btn.is-fav { color: var(--fav-gold); }
+        .card-img { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 3rem; border-bottom: 1px solid #222; }
+        .card-body { padding: 20px; }
+        .card-tag { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; display: block; opacity: 0.6; }
+        .card-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 15px 0; }
+        .action-box { display: flex; gap: 8px; }
+        .a-btn { flex: 1; padding: 10px; border-radius: 12px; border: none; cursor: pointer; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 5px; color: white; text-decoration: none; }
+        .a-play { background: var(--accent-neon); }
+        .a-copy { background: #333; }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 200; justify-content: center; align-items: center; }
+        .modal-content { background: #1a1a20; width: 90%; max-width: 480px; border-radius: 25px; border: 2px solid var(--accent-neon); padding: 30px; position: relative; color: white; max-height: 85vh; overflow-y: auto; box-sizing: border-box; }
+        .modal-close { position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        
+        #cookie-banner {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(16, 16, 22, 0.98);
+            border-top: 2px solid var(--accent-neon); padding: 20px; box-sizing: border-box;
+            z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; text-align: center;
         }
-        .loader-glow-text {
-            animation: textPulse 1.5s ease-in-out infinite alternate;
-        }
-        @keyframes textPulse {
-            0% { filter: drop-shadow(0 0 5px rgba(244, 63, 94, 0.2)); opacity: 0.7; }
-            100% { filter: drop-shadow(0 0 25px rgba(244, 63, 94, 0.8)); opacity: 1; }
-        }
-        /* Contenedores con efecto de cristal esmerilado */
-        .bg-\[\#11141c\], .bg-\[\#10131b\], .bg-\[\#0b0d13\]\/95, #prime-info-panel {
-            background: rgba(9, 12, 19, 0.8) !important;
-            backdrop-filter: blur(16px);
-            border-color: rgba(255, 255, 255, 0.04) !important;
-        }
-       
-        .rarity-case { border-color: #5e98d9 !important; background: linear-gradient(180deg, rgba(14, 17, 24, 0.8) 0%, rgba(94, 152, 217, 0.08) 100%) !important; }
-        .rarity-harlequin { border-color: #e11d48 !important; background: linear-gradient(180deg, rgba(14, 17, 24, 0.8) 0%, rgba(225, 29, 72, 0.08) 100%) !important; }
-        .rarity-achroma { border-color: #94a3b8 !important; background: linear-gradient(180deg, rgba(14, 17, 24, 0.8) 0%, rgba(148, 163, 184, 0.08) 100%) !important; }
-        .drop-card { transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); border-width: 1px; }
-        .drop-card:hover { transform: translateY(-5px) scale(1.02); border-color: #f43f5e !important; box-shadow: 0 15px 30px -10px rgba(244, 63, 94, 0.4); }
-       
-        .price-flash { animation: flashHighlight 0.8s ease-out; }
-        @keyframes flashHighlight {
-            0% { background-color: rgba(244, 63, 94, 0.2); box-shadow: inset 0 0 10px rgba(244, 63, 94, 0.2); }
-            100% { background-color: transparent; }
-        }
-        /* Transición de colapso para el panel Prime */
-        #prime-info-panel {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
-        }
-        #prime-info-panel.expanded {
-            max-height: 600px;
-        }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #1c2331; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #f43f5e; }
+        .cookie-content { max-width: 800px; font-size: 0.9rem; color: #ccc; line-height: 1.5; }
+        .cookie-buttons { display: flex; gap: 10px; }
+        .btn-cookie { padding: 10px 20px; border-radius: 30px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; border: none; cursor: pointer; }
+        .btn-accept-cookie { background: var(--accent-neon); color: white; }
+        .btn-reject-cookie { background: #333; color: white; }
+
+        .login-input { width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #333; background: #121216; color: white; margin-bottom: 15px; box-sizing: border-box; outline: none; }
+        .login-input:focus { border-color: var(--accent-neon); }
+        .form-link { color: var(--accent-neon); font-size: 0.8rem; cursor: pointer; text-decoration: underline; margin-bottom: 15px; display: inline-block; }
+
+        #toast { visibility: hidden; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 12px 30px; border-radius: 50px; font-weight: 800; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        #toast.show { visibility: visible; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
-    <!-- Capa de fondo con partículas dinámicas -->
-    <div class="bg-particles"></div>
-    <!-- INTRO ANIMADA (PANTALLA DE CARGA AL ENTRAR) -->
-    <div id="intro-loader">
-        <div class="text-center space-y-4">
-            <div class="flex items-center justify-center space-x-3 text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-400 to-rose-500 font-extrabold text-4xl tracking-widest loader-glow-text">
-                <i data-lucide="package-open" class="text-rose-500 w-10 h-10 animate-spin" style="animation-duration: 3s;"></i>
-                <span>MARKETDROP<span class="text-white">.HUB</span></span>
-            </div>
-            <div class="w-48 h-1 bg-[#121620] mx-auto rounded-full overflow-hidden border border-white/5">
-                <div class="h-full bg-gradient-to-r from-orange-500 to-rose-500 rounded-full" id="intro-progress-bar" style="width: 0%; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);"></div>
-            </div>
-            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Loading analytical market flows...</p>
+<body>
+
+    <div id="cookie-banner" style="display: none;">
+        <div class="cookie-content">Utilizamos cookies para mejorar tu experiencia de navegación. Al hacer clic en "Aceptar", das tu consentimiento.</div>
+        <div class="cookie-buttons">
+            <button class="btn-cookie btn-accept-cookie" onclick="aceptarCookies()">Aceptar todas</button>
+            <button class="btn-cookie btn-reject-cookie" onclick="rechazarCookies()">Rechazar</button>
         </div>
     </div>
-    <!-- CONTENIDO GENERAL CON ANIMACIÓN DE ENTRADA -->
-    <div class="main-content-fade flex flex-col min-h-screen">
-       
-        <nav class="bg-[#0b0d13]/95 backdrop-blur-md border-b border-[#1a1f2c] px-6 py-4 flex items-center justify-between sticky top-0 z-50">
-            <div class="flex items-center space-x-6 md:space-x-10 w-full lg:w-auto">
-                <div class="flex items-center space-x-2 font-extrabold text-2xl tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500 flex-shrink-0">
-                    <i data-lucide="package-open" class="text-orange-500"></i>
-                    <span>marketdrop<span class="text-white">.hub</span></span>
-                </div>
-                <div class="flex bg-[#12151c] p-1 rounded-xl border border-[#1f2635] flex-wrap gap-1">
-                    <button onclick="switchTab('drops')" id="btn-drops" class="px-3 py-2 rounded-lg text-xs md:text-sm font-bold transition text-rose-400 bg-[#1a1f2c] border border-rose-500/10 flex items-center gap-1.5">
-                        <i data-lucide="gift" class="w-4 h-4"></i> WEEKLY DROPS
-                    </button>
-                    <button onclick="switchTab('analytics')" id="btn-analytics" class="px-3 py-2 rounded-lg text-xs md:text-sm font-bold transition text-gray-400 hover:text-white flex items-center gap-1.5">
-                        <i data-lucide="trending-up" class="w-4 h-4"></i> FORECAST ANALYSIS
-                    </button>
-                    <button onclick="switchTab('investments')" id="btn-investments" class="px-3 py-2 rounded-lg text-xs md:text-sm font-bold transition text-gray-400 hover:text-white flex items-center gap-1.5">
-                        <i data-lucide="line-chart" class="w-4 h-4"></i> ANALYSIS AND INVESTMENTS
-                    </button>
-                    <button onclick="switchTab('armory')" id="btn-armory" class="px-3 py-2 rounded-lg text-xs md:text-sm font-bold transition text-gray-400 hover:text-white flex items-center gap-1.5">
-                        <i data-lucide="shield-alert" class="w-4 h-4"></i> ARMORY PASS
-                    </button>
+
+    <header>
+        <img src="SDJ.jpg" alt="SDJ" class="logo-sdj">
+        <div class="header-auth" id="headerAuthContainer">
+            <button class="btn-main btn-login-open" onclick="toggleLoginModal()">🔑 Iniciar Sesión</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 style="margin-top: 30px;">SDJ COMMAND CENTER</h1>
+        
+        <div class="controls-wrapper">
+            <div id="help-banner">
+                <div style="font-weight: 800; color: white; margin-bottom: 5px;">⚠️ ¿Problemas con un canal?</div>
+                <div style="color: #ccc; font-size: 0.95rem;">
+                    <a href="https://asesearch.vercel.app/" target="_blank" style="color: #00f3ff; font-weight: bold; text-decoration: underline;">Usa la web de búsqueda</a>, descarga el archivo .m3u y ábrelo con Ace Player.
                 </div>
             </div>
-            <div class="hidden lg:flex items-center gap-4">
-                <span class="text-xs bg-rose-500/10 text-rose-400 font-bold px-3 py-1 rounded-full border border-rose-500/20 flex items-center gap-1.5">
-                    <span class="w-2 h-2 bg-rose-400 rounded-full animate-pulse"></span> MARKETDROP.HUB
-                </span>
+
+            <input type="text" id="searchInput" class="search-input" placeholder="Buscar canal o categoría..." onkeyup="filterChannels()">
+            
+            <div class="btn-group">
+                <a href="https://discord.gg/9xSdJfUQuw" target="_blank" class="btn-main btn-discord">💥 Discord</a>
+                <a href="https://www.mediafire.com/file/ct596bvy3u0n20e/Ace_Stream_Media_3.2.8.exe/file" target="_blank" class="btn-main btn-download">⛓️‍💥 Descargar Ace</a>
+                <button onclick="activarBusqueda()" class="btn-main btn-ace-search">🔑 ¿Canal no funciona?</button>
+                <button onclick="toggleModal()" class="btn-main btn-updates">🆕 Cambios</button>
+                <button onclick="toggleFavFilter()" id="favFilterBtn" class="btn-main btn-fav-filter">⭐ Favoritos</button>
             </div>
-        </nav>
-        <!-- SECCIÓN E INFORMACIÓN PRIME STATUS -->
-        <div class="max-w-7xl w-full mx-auto px-4 md:px-8 pt-6">
-            <button onclick="togglePrimePanel()" id="btn-prime" class="w-full bg-gradient-to-r from-orange-500 via-rose-500 to-pink-600 hover:from-orange-400 hover:to-rose-400 text-white font-black py-4 px-6 rounded-2xl shadow-lg flex items-center justify-between tracking-wider border border-rose-400/20 transition duration-300">
-                <div class="flex items-center gap-3">
-                    <i data-lucide="shield-check" class="w-6 h-6 text-orange-200 animate-bounce"></i>
-                    <span class="text-base md:text-lg">PRIME STATUS BENEFITS IN COUNTER-STRIKE 2</span>
+        </div>
+
+        <!-- MOTOR -->
+        <div class="category-section" id="sec-motor">
+            <div class="category-title cat-motor">🏎️ Deportes de Motor</div>
+            <div class="grid">
+                <div class="card" data-id="f1-dazn">
+                    <button class="fav-btn" onclick="toggleFav('f1-dazn')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #e10600, #000);">🏎️</div>
+                    <div class="card-body"><span class="card-tag">Motor</span><h3 class="card-title">Fórmula 1 (DAZN)</h3>
+                        <div class="action-box"><a href="acestream://27d11bbeb3026231d52de16b1fac48da7a099247" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('27d11bbeb3026231d52de16b1fac48da7a099247', 'F1')">ID</button></div>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2 text-sm bg-black/30 px-3 py-1 rounded-xl border border-white/10">
-                    <span id="prime-btn-text">SEE MORE</span>
-                    <i data-lucide="chevron-down" id="prime-icon-arrow" class="w-4 h-4 transition-transform duration-300"></i>
+                <div class="card" data-id="f1-sky">
+                    <button class="fav-btn" onclick="toggleFav('f1-sky')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #000);">🏎️</div>
+                    <div class="card-body"><span class="card-tag">Motor [EN]</span><h3 class="card-title">F1 TV</h3>
+                        <div class="action-box"><a href="acestream://5ebecc3b3091d0bc459a135839b57945d3349e1b" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('5ebecc3b3091d0bc459a135839b57945d3349e1b', 'F1 TV')">ID</button></div>
+                    </div>
                 </div>
+                <div class="card" data-id="motogp-dazn">
+                    <button class="fav-btn" onclick="toggleFav('motogp-dazn')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #333, #000);">🏍️</div>
+                    <div class="card-body"><span class="card-tag">Motor</span><h3 class="card-title">MotoGP (DAZN)</h3>
+                        <div class="action-box"><a href="acestream://c53bdb3be55d12c5188d25085f1bb16911c15cea" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('c53bdb3be55d12c5188d25085f1bb16911c15cea', 'MotoGP')">ID</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FÚTBOL -->
+        <div class="category-section" id="sec-futbol">
+            <div class="category-title cat-futbol">⚽ Fútbol</div>
+            <div class="grid">
+                <div class="card" data-id="laliga-dazn">
+                    <button class="fav-btn" onclick="toggleFav('laliga-dazn')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #2ecc71, #000);">⚽</div>
+                    <div class="card-body"><span class="card-tag">LaLiga</span><h3 class="card-title">DAZN LaLiga</h3>
+                        <div class="action-box"><a href="acestream://dda5d2cace9bc4cb0918e62bc50d657d4a10496a" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('dda5d2cace9bc4cb0918e62bc50d657d4a10496a', 'DAZN LaLiga')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="laliga1-m">
+                    <button class="fav-btn" onclick="toggleFav('laliga1-m')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #000);">⚽</div>
+                    <div class="card-body"><span class="card-tag">M+ LaLiga</span><h3 class="card-title">M+ LaLiga</h3>
+                        <div class="action-box"><a href="acestream://0b5f802f2de6488b4023d0f05195486e19d81ed7" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('0b5f802f2de6488b4023d0f05195486e19d81ed7', 'M+ LaLiga')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="laliga2-m">
+                    <button class="fav-btn" onclick="toggleFav('laliga2-m')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #000);">⚽</div>
+                    <div class="card-body"><span class="card-tag">M+ LaLiga</span><h3 class="card-title">M+ LaLiga 2</h3>
+                        <div class="action-box"><a href="acestream://caa631e8850e3eb5e7c039063dd8a339ccef1176" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('caa631e8850e3eb5e7c039063dd8a339ccef1176', 'M+ LaLiga 2')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="m-hypermotion">
+                    <button class="fav-btn" onclick="toggleFav('m-hypermotion')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #2ecc71, #27ae60);">⚽</div>
+                    <div class="card-body"><span class="card-tag">M+ Liga</span><h3 class="card-title">M+ Hypermotion</h3>
+                        <div class="action-box"><a href="acestream://4636ed75106cb00e9c70cc2029edf0a4df7ad73f" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('4636ed75106cb00e9c70cc2029edf0a4df7ad73f', 'M+ Hypermotion')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="ucl-live">
+                    <button class="fav-btn" onclick="toggleFav('ucl-live')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #001e4e, #000);">🏆</div>
+                    <div class="card-body"><span class="card-tag">Champions</span><h3 class="card-title">Liga de Campeones</h3>
+                        <div class="action-box"><a href="acestream://97df5b7824948972d041d8ca2a4d29c90b641bc9" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('97df5b7824948972d041d8ca2a4d29c90b641bc9', 'Champions')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="ucl-live-2">
+                    <button class="fav-btn" onclick="toggleFav('ucl-live-2')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #001e4e, #333);">🏆</div>
+                    <div class="card-body"><span class="card-tag">Champions</span><h3 class="card-title">Liga de Campeones 2</h3>
+                        <div class="action-box"><a href="acestream://338b5de78b0b40a6f9ca3cc0cf9be93341b9ceea" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('338b5de78b0b40a6f9ca3cc0cf9be93341b9ceea', 'Champions 2')">ID</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OTROS DEPORTES -->
+        <div class="category-section" id="sec-deportes">
+            <div class="category-title cat-deportes">🏅 Otros Deportes</div>
+            <div class="grid">
+                <div class="card" data-id="m-vamos">
+                    <button class="fav-btn" onclick="toggleFav('m-vamos')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #7f5af0);">🏅</div>
+                    <div class="card-body"><span class="card-tag">Movistar+</span><h3 class="card-title">M+ Vamos</h3>
+                        <div class="action-box"><a href="acestream://7e4f6eb38e0d5ef52b7f8b96eb80c1d8c87dad16" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('7e4f6eb38e0d5ef52b7f8b96eb80c1d8c87dad16', 'M+ Vamos')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="m-deportes">
+                    <button class="fav-btn" onclick="toggleFav('m-deportes')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #001e4e);">🏅</div>
+                    <div class="card-body"><span class="card-tag">Movistar+</span><h3 class="card-title">M+ Deportes</h3>
+                        <div class="action-box"><a href="acestream://acb510858f34c3c6fd5f79395b031abd6885c2b3" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('acb510858f34c3c6fd5f79395b031abd6885c2b3', 'M+ Deportes')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="dazn-basket">
+                    <button class="fav-btn" onclick="toggleFav('dazn-basket')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #ff9800, #333);">🏀</div>
+                    <div class="card-body"><span class="card-tag">DAZN</span><h3 class="card-title">DAZN Baloncesto</h3>
+                        <div class="action-box"><a href="acestream://6fbd92735502bdebbf1ea58f4298e49759c0cf07" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('6fbd92735502bdebbf1ea58f4298e49759c0cf07', 'DAZN Basket')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="euro-1">
+                    <button class="fav-btn" onclick="toggleFav('euro-1')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #001e4e, #3498db);">🎾</div>
+                    <div class="card-body"><span class="card-tag">Eurosport 1</span><h3 class="card-title">Eurosport 1</h3>
+                        <div class="action-box"><a href="acestream://48a589dbeab3544662fafd79888aada7d834cfe9" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('48a589dbeab3544662fafd79888aada7d834cfe9', 'Eurosport 1')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="euro-2">
+                    <button class="fav-btn" onclick="toggleFav('euro-2')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #001e4e, #3498db);">🚴</div>
+                    <div class="card-body"><span class="card-tag">Eurosport 2</span><h3 class="card-title">Eurosport 2</h3>
+                        <div class="action-box"><a href="acestream://c6180a86440004748e2abe34d6f31eed8a218a3a" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('c6180a86440004748e2abe34d6f31eed8a218a3a', 'Eurosport 2')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="dazn1">
+                    <button class="fav-btn" onclick="toggleFav('dazn1')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #3498db, #000);">📺</div>
+                    <div class="card-body"><span class="card-tag">DAZN</span><h3 class="card-title">DAZN 1</h3>
+                        <div class="action-box"><a href="acestream://d5b2c6b940cf3df5e8f9dc6f000f0ea23a10b151" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('d5b2c6b940cf3df5e8f9dc6f000f0ea23a10b151', 'DAZN 1')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="dazn2">
+                    <button class="fav-btn" onclick="toggleFav('dazn2')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #3498db, #000);">📺</div>
+                    <div class="card-body"><span class="card-tag">DAZN</span><h3 class="card-title">DAZN 2</h3>
+                        <div class="action-box"><a href="acestream://b0eabe0fdd02fdd165896236765a9b753a2ff516" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('b0eabe0fdd02fdd165896236765a9b753a2ff516', 'DAZN 2')">ID</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEPORTES USA -->
+        <div class="category-section" id="sec-usa">
+            <div class="category-title cat-usa">🏀 Deportes USA</div>
+            <div class="grid">
+                <div class="card" data-id="fox-sports-us">
+                    <button class="fav-btn" onclick="toggleFav('fox-sports-us')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #ff8c00, #e62210);">🦊</div>
+                    <div class="card-body"><span class="card-tag">Fox Sports</span><h3 class="card-title">Fox Sports [US]</h3>
+                        <div class="action-box"><a href="acestream://c9c062941fbecb16ce29437f346ea7177d720898" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('c9c062941fbecb16ce29437f346ea7177d720898', 'Fox Sports US')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="nba-pro">
+                    <button class="fav-btn" onclick="toggleFav('nba-pro')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #ff9800, #000);">🏀</div>
+                    <div class="card-body"><span class="card-tag">NBA</span><h3 class="card-title">NBA TV Pro</h3>
+                        <div class="action-box"><a href="acestream://e72d03fb9694164317260f684470be9ab781ed95" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('e72d03fb9694164317260f684470be9ab781ed95', 'NBA')">ID</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ENTRETENIMIENTO -->
+        <div class="category-section" id="sec-fun">
+            <div class="category-title cat-fun">🎭 Entretenimiento</div>
+            <div class="grid">
+                <div class="card" data-id="m-plus">
+                    <button class="fav-btn" onclick="toggleFav('m-plus')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #1a1a20);">📺</div>
+                    <div class="card-body"><span class="card-tag">Movistar+</span><h3 class="card-title">Movistar+</h3>
+                        <div class="action-box"><a href="acestream://1ab443f5b4beb6d586f19e8b25b9f9646cf2ab78" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('1ab443f5b4beb6d586f19e8b25b9f9646cf2ab78', 'Movistar+')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="fox-comedy">
+                    <button class="fav-btn" onclick="toggleFav('fox-comedy')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #ff3366, #1a1a20);">🎭</div>
+                    <div class="card-body"><span class="card-tag">Fox</span><h3 class="card-title">Fox Comedy</h3>
+                        <div class="action-box"><a href="acestream://default_id_placeholder" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('default_id_placeholder', 'Fox Comedy')">ID</button></div>
+                    </div>
+                </div>
+                <div class="card" data-id="peliculas-series">
+                    <button class="fav-btn" onclick="toggleFav('peliculas-series')">★</button>
+                    <div class="card-img" style="background: linear-gradient(45deg, #9b59b6, #1a1a20);">🎬</div>
+                    <div class="card-body">
+                        <span class="card-tag">Streaming Web</span>
+                        <h3 class="card-title">Películas y Series</h3>
+                        <div class="action-box">
+                            <button class="a-btn a-play" onclick="toggleHdFullModal()">Abrir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL DE CAMBIOS -->
+    <div class="modal-overlay" id="updatesModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="toggleModal()">&times;</button>
+            <h2 style="font-family: 'Oswald'; color: var(--accent-neon);">🆕 NOTAS DE ACTUALIZACIÓN</h2>
+            <hr style="border-color: #333; margin-bottom: 15px;">
+            <ul style="padding-left: 20px; line-height: 1.6;">
+                <li>Sistema de usuarios avanzado con perfil personalizado.</li>
+                <li>Inicio de sesión con Discord y Código de Verificación OTP.</li>
+                <li>Recuperación de contraseña por email integrada.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- MODAL DE HDFULL -->
+    <div class="modal-overlay" id="hdFullModal">
+        <div class="modal-content" style="text-align: center;">
+            <button class="modal-close" onclick="toggleHdFullModal()">&times;</button>
+            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); margin-bottom: 10px;">🎬 PELÍCULAS Y SERIES</h2>
+            <hr style="border-color: #333; margin-bottom: 15px;">
+            <p style="color: #ccc; font-size: 0.95rem; line-height: 1.5;">Plataforma web externa <b>hdfull.cv</b>.</p>
+            <div style="background: #25252e; border: 1px solid #333; border-radius: 12px; padding: 15px; margin: 20px 0; text-align: left;">
+                <div style="margin-bottom: 8px;"><b>Usuario:</b> <span style="color: #00f3ff;">ManoloElPobre</span></div>
+                <div><b>Contraseña:</b> <span style="color: #00f3ff;">soyPobre</span></div>
+            </div>
+            <a href="https://hdfull.cv" target="_blank" class="btn-main a-play" style="display: inline-flex; width: 100%; box-sizing: border-box; justify-content: center; padding: 12px; font-size: 0.9rem;">
+                Ir a hdfull.cv 🚀
+            </a>
+        </div>
+    </div>
+
+    <!-- MODAL DE INICIO DE SESIÓN -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="toggleLoginModal()">&times;</button>
+            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); text-align: center; margin-bottom: 5px;">🔑 CUENTA SDJ</h2>
+            <p style="text-align: center; color: #aaa; font-size: 0.85rem; margin-bottom: 20px;">Accede con tu cuenta o Discord</p>
+            
+            <button type="button" class="btn-main btn-discord" onclick="loginDiscord()" style="width: 100%; justify-content: center; margin-bottom: 15px; padding: 12px;">
+                💬 Continuar con Discord
             </button>
-            <div id="prime-info-panel" class="mt-4 border border-rose-500/30 rounded-2xl opacity-0">
-                <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                    <div class="md:col-span-2 space-y-4">
-                        <h3 class="text-2xl font-black text-rose-400 tracking-wide uppercase">Why upgrade to Prime Account?</h3>
-                        <p class="text-sm text-gray-300 leading-relaxed">
-                            Prime status is a permanent upgrade for CS2. Players with Prime status are matched exclusively with other Prime users in all online modes, drastically reducing encounters with cheaters or annoying smurf accounts.
-                        </p>
-                        <ul class="space-y-2 text-sm text-gray-200 font-semibold">
-                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i> Exclusive access to the Weekly Drop Package (free Skins and Cases!).</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i> Access to Premier Mode.</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i> Earning Experience Points (XP) and Service Medals.</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i> Matchmaking in a much cleaner gaming ecosystem.</li>
-                        </ul>
-                        <div class="pt-2">
-                            <a href="https://store.steampowered.com/app/730/CounterStrike_2/" target="_blank" class="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-black font-black px-6 py-3 rounded-xl tracking-wider text-sm transition shadow-md shadow-green-900/30">
-                                GET PRIME STATUS <i data-lucide="external-link" class="w-4 h-4"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="flex justify-center overflow-hidden h-44 items-center rounded-xl bg-black/40 border border-[#1f2635] p-4">
-                        <img src="Prime.png" alt="CS2 Prime Status" class="max-h-full max-w-full object-contain filter drop-shadow-[0_0_15px_rgba(244,63,94,0.4)]" onerror="this.onerror=null; this.src='https://placehold.co/200x200/10131b/ffffff?text=Prime+Status'">
-                    </div>
+
+            <div style="text-align: center; color: #555; margin-bottom: 15px; font-size: 0.8rem;">O por correo electrónico</div>
+
+            <form onsubmit="handleAuthForm(event)" id="authFormElement">
+                <input type="email" id="loginEmailInput" class="login-input" placeholder="Correo electrónico" required>
+                <input type="password" id="loginPassInput" class="login-input" placeholder="Contraseña" required>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="form-link" onclick="mostrarRecuperacion()">¿Olvidaste tu contraseña?</span>
+                    <span class="form-link" onclick="toggleAuthMode()" id="switchModeText">¿No tienes cuenta? Regístrate</span>
                 </div>
-            </div>
+
+                <button type="submit" id="authSubmitBtn" class="btn-main btn-login-open" style="width: 100%; justify-content: center; padding: 12px; margin-top: 10px;">
+                    Iniciar Sesión
+                </button>
+            </form>
         </div>
-        <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8">
-            <!-- SECCIÓN 1: DROPS SEMANALES -->
-            <section id="sec-drops" class="space-y-6">
-                <div class="bg-[#11141c] border border-[#1e2433] p-6 rounded-2xl shadow-xl">
-                    <h2 class="text-xl font-black text-white tracking-wide uppercase flex items-center gap-2">
-                        <i data-lucide="sparkles" class="text-rose-400"></i> New Weekly Drop Collections
-                    </h2>
-                    <p class="text-sm text-gray-400 mt-2 leading-relaxed">
-                        Prices and drop probabilities for <span class="text-rose-400 font-semibold">Drops</span> and <span class="text-slate-400 font-semibold">Cases</span> for market analysis.
-                    </p>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="drops-grid">
-                </div>
-            </section>
-            <!-- SECCIÓN 2: ANALISIS PREVISTO -->
-            <section id="sec-analytics" class="hidden space-y-6">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="bg-[#11141c] border border-[#1e2433] p-5 rounded-2xl space-y-4 shadow-xl h-fit">
-                        <h3 class="text-base font-bold text-white border-l-4 border-rose-500 pl-2 uppercase tracking-wide">Estimated Market</h3>
-                        <p class="text-xs text-gray-400">Select an item to analyze the simulated post-release price fluctuation.</p>
-                       
-                        <div class="space-y-2 max-h-[420px] overflow-y-auto pr-1" id="cases-selector-list">
-                        </div>
-                    </div>
-                    <div class="bg-[#11141c] border border-[#1e2433] p-6 rounded-2xl lg:col-span-2 space-y-4 shadow-xl flex flex-col justify-between">
-                        <div class="flex justify-between items-center border-b border-[#1e2433] pb-4">
-                            <div>
-                                <h2 id="chart-case-name" class="text-xl font-black text-white tracking-wide">Select an item</h2>
-                                <p class="text-xs text-gray-400 uppercase tracking-wider">Simulated post-release history</p>
-                            </div>
-                            <div class="text-right">
-                                <div id="chart-case-price" class="text-2xl font-black text-rose-400">$0.00</div>
-                                <span class="text-[11px] font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded">Live Simulation</span>
-                            </div>
-                        </div>
-                       
-                        <div class="relative w-full h-80 my-2">
-                            <canvas id="analyticsChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- SECCIÓN 3: ANÁLISIS E INVERSIONES -->
-            <section id="sec-investments" class="hidden space-y-6">
-                <div class="bg-[#11141c] border border-[#1e2433] p-6 rounded-2xl shadow-xl">
-                    <h2 class="text-xl font-black text-white tracking-wide uppercase flex items-center gap-2">
-                        <i data-lucide="line-chart" class="text-rose-400"></i> CS2 Investors Academy
-                    </h2>
-                    <p class="text-sm text-gray-400 mt-2 leading-relaxed">
-                        Understand Valve's market cycles, case supply and demand flows, and learn to read charts to maximize your Steam balance or cryptocurrency.
-                    </p>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-[#11141c] border border-emerald-500/20 p-6 rounded-2xl space-y-4 shadow-xl">
-                        <div class="flex items-center gap-2 border-b border-[#1e2433] pb-3">
-                            <div class="bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/20">
-                                <i data-lucide="trending-down" class="text-emerald-400 w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-bold text-white uppercase">When to Buy (Accumulation Zones)</h3>
-                                <p class="text-xs text-emerald-400 font-semibold tracking-wider">Market lows and panic points</p>
-                            </div>
-                        </div>
-                        <div class="space-y-3 text-sm text-gray-300">
-                            <p><strong class="text-white">1. Steam Sales and Operations:</strong> When Valve releases a new pass or sale, users sell cases cheaply to buy new content. Prices drop <span class="text-emerald-400 font-bold">15%-30%</span>.</p>
-                            <p><strong class="text-white">2. Oversupply cycle:</strong> The ideal buying point for active circulation cases is when the massive post-release drop curve completely flattens (month 6 onwards).</p>
-                        </div>
-                        <div class="bg-black/30 border border-[#1e2433] p-4 rounded-xl">
-                            <div class="h-24 flex items-end gap-1.5 pt-4 border-b border-gray-800">
-                                <div class="bg-gray-700 w-full" style="height: 90%"></div>
-                                <div class="bg-gray-600 w-full" style="height: 50%"></div>
-                                <div class="bg-emerald-500 w-full border-t-2 border-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.3)]" style="height: 15%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-[#11141c] border border-rose-500/20 p-6 rounded-2xl space-y-4 shadow-xl">
-                        <div class="flex items-center gap-2 border-b border-[#1e2433] pb-3">
-                            <div class="bg-rose-500/10 p-2 rounded-lg border border-rose-500/20">
-                                <i data-lucide="trending-up" class="text-rose-400 w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-bold text-white uppercase">When to Sell (Profit Taking)</h3>
-                                <p class="text-xs text-rose-400 font-semibold tracking-wider">All-Time Highs (ATH) and Hype</p>
-                            </div>
-                        </div>
-                        <div class="space-y-3 text-sm text-gray-300">
-                            <p><strong class="text-white">1. Jump to the "Rare Pool":</strong> When a case is removed from the active rotation, its drop rate drops to <span class="text-rose-400 font-bold">0.03%</span>. Its value rises immediately due to the drastic supply cut.</p>
-                            <p><strong class="text-white">2. Major Update Hype:</strong> Massive content patches bring nostalgic players who buy keys en masse to open old cases, temporarily increasing their value.</p>
-                        </div>
-                        <div class="bg-black/30 border border-[#1e2433] p-4 rounded-xl">
-                            <div class="h-24 flex items-end gap-1.5 pt-4 border-b border-gray-800">
-                                <div class="bg-gray-700 w-full" style="height: 20%"></div>
-                                <div class="bg-orange-500 w-full" style="height: 45%"></div>
-                                <div class="bg-rose-500 w-full border-t-2 border-rose-300 shadow-[0_0_10px_rgba(244,63,94,0.4)]" style="height: 95%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- SECCIÓN 4: PASE DE ARMERÍA -->
-            <section id="sec-armory" class="hidden space-y-6">
-                <div class="bg-[#11141c] border border-[#1e2433] p-6 rounded-2xl shadow-xl">
-                    <div class="space-y-2">
-                        <h2 class="text-xl font-black text-white tracking-wide uppercase flex items-center gap-2">
-                            <i data-lucide="shield-alert" class="text-rose-400"></i> Maximize Profits with the Armory Pass
-                        </h2>
-                        <p class="text-sm text-gray-400 leading-relaxed">
-                            In-depth analysis of Valve's cumulative credit system. Learn how to calculate the cost per credit and make your investment profitable.
-                        </p>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="bg-[#11141c] border border-[#1e2433] p-5 rounded-2xl space-y-3 shadow-xl">
-                        <div class="flex items-center gap-2 border-b border-[#1e2433] pb-2 text-orange-400 font-bold uppercase text-sm">
-                            <i data-lucide="calculator" class="w-4 h-4"></i> Cost-Credit Ratio
-                        </div>
-                        <p class="text-xs text-gray-400 leading-relaxed">
-                            Each pass grants a maximum of **40 credits** by playing casually or competitively. To maximize benefit, advanced investors buy up to the limit of <span class="text-white font-bold">5 simultaneous passes</span> on a single account to multiply by five the credits earned per experience point.
-                        </p>
-                        <div class="bg-black/30 p-3 rounded-lg border border-[#1f2635] text-center text-xs">
-                            <span class="block text-gray-500 uppercase font-black text-[10px]">Limit per Account</span>
-                            <span class="text-lg font-black text-orange-400">5 Passes = 200 Credits</span>
-                        </div>
-                    </div>
-                    <div class="bg-[#11141c] border border-[#1e2433] p-5 rounded-2xl space-y-3 shadow-xl">
-                        <div class="flex items-center gap-2 border-b border-[#1e2433] pb-2 text-cyan-400 font-bold uppercase text-sm">
-                            <i data-lucide="shopping-bag" class="w-4 h-4"></i> Redemption Strategy (Skins vs Cases)
-                        </div>
-                        <p class="text-xs text-gray-400 leading-relaxed">
-                            The common mistake is spending credits on random collections looking for the red skin. Historical math shows that playing it safe generates more consistent returns:
-                        </p>
-                        <ul class="text-[11px] text-gray-300 space-y-1 font-semibold">
-                            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> **Armory Cases:** Low credit cost, high immediate liquidity.</li>
-                            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> **Keychains (Charms):** Their profitability depends on the initial hype level.</li>
-                            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> **Limited Edition Skins:** Keep them long-term without applying stickers.</li>
-                        </ul>
-                    </div>
-                    <div class="bg-[#11141c] border border-[#1e2433] p-5 rounded-2xl space-y-3 shadow-xl">
-                        <div class="flex items-center gap-2 border-b border-[#1e2433] pb-2 text-purple-400 font-bold uppercase text-sm">
-                            <i data-lucide="hourglass" class="w-4 h-4"></i> XP per Hour Optimization
-                        </div>
-                        <p class="text-xs text-gray-400 leading-relaxed">
-                            Credits are unlocked by earning pure experience. The most optimal way to farm these credits without wasting time on long competitive matches is by playing intensively in fast game modes (such as **Arms Race / Massive Deathmatch**) during days with the weekly XP bonus active.
-                        </p>
-                        <div class="bg-black/30 p-2.5 rounded-lg border border-[#1f2635] flex items-center justify-between text-xs font-bold">
-                            <span class="text-gray-400">Fastest route:</span>
-                            <span class="text-purple-400">Official Deathmatch + Weekly Bonus</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-        <footer class="bg-[#05060a]/90 backdrop-blur-md border-t border-[#121620] py-6 text-center text-xs text-gray-500 mt-auto">
-            <p>&copy; 2026 marketdrop.hub - Best investments</p>
-        </footer>
     </div>
+
+    <!-- MODAL DE CÓDIGO DE VERIFICACIÓN (OTP) -->
+    <div class="modal-overlay" id="verifyModal">
+        <div class="modal-content" style="text-align: center;">
+            <h2 style="font-family: 'Oswald'; color: var(--accent-neon);">🛡️ VERIFICACIÓN DE CUENTA</h2>
+            <p style="color: #ccc; font-size: 0.85rem; margin-bottom: 20px;">Hemos enviado un código de 6 dígitos a tu correo electrónico. Introdúcelo abajo:</p>
+            
+            <form onsubmit="verificarCodigoOTP(event)">
+                <input type="text" id="otpCodeInput" class="login-input" placeholder="Ej: 489201" maxlength="6" style="text-align: center; font-size: 1.5rem; letter-spacing: 5px;" required>
+                <button type="submit" class="btn-main btn-login-open" style="width: 100%; justify-content: center; padding: 12px;">
+                    Verificar Código
+                </button>
+            </form>
+            <span class="form-link" onclick="cerrarModalVerify()" style="margin-top: 15px; display: inline-block;">Cancelar</span>
+        </div>
+    </div>
+
+    <!-- MODAL DE RECUPERACIÓN DE CONTRASEÑA -->
+    <div class="modal-overlay" id="forgotModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="cerrarRecuperacion()">&times;</button>
+            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); text-align: center; margin-bottom: 5px;">🔄 RECUPERAR CUENTA</h2>
+            <p style="text-align: center; color: #aaa; font-size: 0.85rem; margin-bottom: 20px;">Introduce tu email y te enviaremos instrucciones</p>
+            
+            <form onsubmit="enviarRecuperacion(event)">
+                <input type="email" id="forgotEmailInput" class="login-input" placeholder="Tu correo electrónico" required>
+                <button type="submit" class="btn-main btn-login-open" style="width: 100%; justify-content: center; padding: 12px;">
+                    Enviar Enlace de Recuperación
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE PERFIL Y PERSONALIZACIÓN -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="toggleProfileModal()">&times;</button>
+            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); text-align: center; margin-bottom: 5px;">⚙️ MI PERFIL</h2>
+            <p style="text-align: center; color: #aaa; font-size: 0.85rem; margin-bottom: 20px;">Personaliza tu nombre y foto de perfil</p>
+            
+            <form onsubmit="guardarPerfil(event)">
+                <label style="font-size: 0.75rem; color: #aaa; display: block; margin-bottom: 5px;">Nombre de usuario:</label>
+                <input type="text" id="profileNameInput" class="login-input" placeholder="Tu nombre" required>
+                
+                <label style="font-size: 0.75rem; color: #aaa; display: block; margin-bottom: 5px;">URL de tu foto de perfil (Imagen):</label>
+                <input type="url" id="profileAvatarInput" class="login-input" placeholder="https://ejemplo.com/foto.jpg">
+                
+                <button type="submit" class="btn-main btn-login-open" style="width: 100%; justify-content: center; padding: 12px; margin-top: 10px;">
+                    Guardar Cambios
+                </button>
+            </form>
+
+            <button class="btn-main btn-updates" onclick="cerrarSesion()" style="width: 100%; justify-content: center; padding: 12px; margin-top: 15px; background: #e10600;">
+                Cerrar Sesión
+            </button>
+        </div>
+    </div>
+
+    <div id="toast">Copiado al portapapeles</div>
+
     <script>
-        let dropItems = [
-            { id: "gallery", name: "Gallery Case", type: "Weapon Case", rarity: "case", price: 1.41, chance: "20%", pool: "Container", history: [1.38, 1.45, 1.29, 1.39, 1.45, 1.42], img: "gallery.png", marketUrl: "https://steamcommunity.com/market/listings/730/Gallery%20Case" },
-            { id: "kilowatt", name: "Kilowatt Case", type: "Weapon Case", rarity: "case", price: 0.35, chance: "40%", pool: "Container", history: [0.45, 0.37, 0.33, 0.38, 0.41, 0.32], img: "kilowatt.png", marketUrl: "https://steamcommunity.com/market/listings/730/Kilowatt%20Case" },
-            { id: "revolution", name: "Revolution Case", type: "Weapon Case", rarity: "case", price: 0.35, chance: "25%", pool: "Container", history: [0.59, 0.50, 0.55, 0.45, 0.41, 0.35], img: "revolution.png", marketUrl: "https://steamcommunity.com/market/listings/730/Revolution%20Case" },
-            { id: "recoil", name: "Recoil Case", type: "Weapon Case", rarity: "case", price: 0.22, chance: "10%", pool: "Container", history: [0.80, 0.65, 0.45, 0.32, 0.28, 0.22], img: "recoil.png", marketUrl: "https://steamcommunity.com/market/listings/730/Recoil%20Case" },
-            { id: "dreams", name: "Dreams & Nightmares Case", type: "Weapon Case", rarity: "case", price: 1.72, chance: "5%", pool: "Container", history: [1.90, 1.60, 1.60, 1.70, 1.88, 1.72], img: "dreams.png", marketUrl: "https://steamcommunity.com/market/listings/730/Dreams%20%26%20Nightmares%20Case" },
-            { id: "ak_breakthrough", name: "AK-47 | Breakthrough", type: "Achroma Collection", rarity: "achroma", price: 20.50, chance: "0.8%", pool: "Rare (White/Black)", history: [12.0, 18.5, 22.0, 25.0, 22.5, 19.5], img: "ak_breakthrough.png", marketUrl: "https://steamcommunity.com/market/search?appid=730&q=AK-47+Breakthrough" },
-            { id: "glock_trace", name: "Glock-18 | Trace Lock", type: "Achroma Collection", rarity: "achroma", price: 11.20, chance: "1.5%", pool: "Monochromatic", history: [5.0, 8.2, 10.5, 9.0, 11.8, 10.2], img: "glock_trace_lock.png", marketUrl: "https://steamcommunity.com/market/search?appid=730&q=Glock-18+Trace+Lock" },
-            { id: "awp_exothermic", name: "AWP | Exothermic", type: "Harlequin Collection", rarity: "harlequin", price: 20.00, chance: "0.05%", pool: "Extremely Rare", history: [20.0, 21.0, 23.0, 18.0, 19.0, 21.0], img: "awp_exothermic.png", marketUrl: "https://steamcommunity.com/market/search?appid=730&q=AWP+Exothermic" },
-            { id: "usp_sleeping", name: "USP-S | Sleeping Potion", type: "Harlequin Collection", rarity: "harlequin", price: 21.00, chance: "0.2%", pool: "Covert Weekly", history: [20.0, 22.0, 19.0, 17.0, 21.5, 20.5], img: "usp_sleeping_potion.png", marketUrl: "https://steamcommunity.com/market/search?appid=730&q=USP-S+Sleeping+Potion" }
-        ];
-        let selectedCaseId = "gallery";
-        let chartInstance = null;
-        function handleIntroLoader() {
-            const progressBar = document.getElementById('intro-progress-bar');
-            const loader = document.getElementById('intro-loader');
-           
-            setTimeout(() => {
-                progressBar.style.width = '100%';
-            }, 100);
-            setTimeout(() => {
-                loader.style.opacity = '0';
-                loader.style.transform = 'scale(1.05)';
-                loader.style.pointerEvents = 'none';
-            }, 1400);
-            setTimeout(() => {
-                loader.remove();
-            }, 2000);
-        }
-        function switchTab(tabId) {
-            const sections = ['drops', 'analytics', 'investments', 'armory'];
-            sections.forEach(sec => {
-                const sectionEl = document.getElementById(`sec-${sec}`);
-                const btnEl = document.getElementById(`btn-${sec}`);
-               
-                if (sec === tabId) {
-                    sectionEl.classList.remove('hidden');
-                    if (sec === 'drops') {
-                        btnEl.className = "px-3 py-2 rounded-lg text-xs md:text-sm font-bold transition text-rose-400 bg-[#1a1f2c] border border-rose-500/10 flex items-center gap-1.5";
-                    } else {
-                        btnEl.className = "px-3 py-2 rounded-lg text-xs md:text-sm font-bold transition text-orange-400 bg-[#1a1f2c] border border-orange-500/10 flex items-center gap-1.5";
-                    }
+        // CONFIGURACIÓN DE SUPABASE
+        const SUPABASE_URL = 'https://vzcsgteonmomcfvqkbsx.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_dIqVef-rsoRykz06VPuYwA_cqPG7ezP';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let favFilterActive = false;
+        let favoritos = JSON.parse(localStorage.getItem('sdj_favoritos')) || [];
+        let isSignUpMode = false;
+        let pendingEmail = '';
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            if (!localStorage.getItem('sdj_cookies_aceptadas')) {
+                document.getElementById('cookie-banner').style.display = 'flex';
+            }
+            renderFavs();
+
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session) {
+                    actualizarUIUsuario(session.user);
+                }
+            } catch (err) {
+                console.error("Error al obtener sesión:", err);
+            }
+
+            // Escuchar cambios de autenticación
+            supabaseClient.auth.onAuthStateChange((event, session) => {
+                if (session) {
+                    actualizarUIUsuario(session.user);
                 } else {
-                    sectionEl.classList.add('hidden');
-                    btnEl.className = "px-3 py-2 rounded-lg text-xs md:text-sm font-bold transition text-gray-400 hover:text-white flex items-center gap-1.5";
+                    actualizarUIUsuario(null);
                 }
             });
-            if (tabId === 'analytics') {
-                setTimeout(() => { selectCaseForChart(selectedCaseId); }, 50);
-            }
+        });
+
+        function aceptarCookies() {
+            localStorage.setItem('sdj_cookies_aceptadas', 'true');
+            document.getElementById('cookie-banner').style.display = 'none';
         }
-        function togglePrimePanel() {
-            const panel = document.getElementById('prime-info-panel');
-            const arrow = document.getElementById('prime-icon-arrow');
-            const btnText = document.getElementById('prime-btn-text');
-           
-            if (panel.classList.contains('expanded')) {
-                panel.classList.remove('expanded');
-                panel.classList.add('opacity-0');
-                arrow.style.transform = "rotate(0deg)";
-                btnText.innerText = "SEE MORE";
+
+        function rechazarCookies() {
+            localStorage.setItem('sdj_cookies_aceptadas', 'false');
+            document.getElementById('cookie-banner').style.display = 'none';
+        }
+
+        function toggleLoginModal() {
+            const modal = document.getElementById('loginModal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function toggleProfileModal() {
+            const modal = document.getElementById('profileModal');
+            if (modal.style.display === 'flex') {
+                modal.style.display = 'none';
             } else {
-                panel.classList.add('expanded');
-                panel.classList.remove('opacity-0');
-                arrow.style.transform = "rotate(180deg)";
-                btnText.innerText = "HIDE";
+                modal.style.display = 'flex';
+                cargarDatosPerfilEnModal();
             }
         }
-        function renderDropsGrid() {
-            const grid = document.getElementById('drops-grid');
-            grid.innerHTML = '';
-            dropItems.forEach(item => {
-                // Definir colores del botón dinámico según la rareza de la tarjeta
-                let btnColorClass = "text-sky-400 hover:bg-sky-500/10 border-sky-500/20";
-                if (item.rarity === 'harlequin') btnColorClass = "text-rose-400 hover:bg-rose-500/10 border-rose-500/20";
-                if (item.rarity === 'achroma') btnColorClass = "text-slate-400 hover:bg-slate-500/10 border-slate-500/20";
-                const card = document.createElement('div');
-                card.className = `drop-card rarity-${item.rarity} bg-[#10131b] rounded-2xl p-4 flex flex-col justify-between relative border border-[#1b212f]`;
-                card.innerHTML = `
-                    <div class="w-full flex justify-between items-center text-[10px] font-extrabold tracking-wider pr-8">
-                        <span class="bg-[#151923] text-gray-400 px-2 py-0.5 rounded border border-gray-800">${item.type}</span>
-                        <span class="text-rose-400">${item.pool}</span>
-                    </div>
-                   
-                    <!-- BOTÓN VER EN STEAM SITUADO EN LA ESQUINA SUPERIOR DERECHA -->
-                    <a href="${item.marketUrl}" target="_blank" class="absolute top-3.5 right-3.5 p-1.5 rounded-lg border bg-black/40 transition duration-200 ${btnColorClass}" title="View on Steam Market">
-                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                    </a>
-                    <div class="my-4 h-24 flex items-center justify-center overflow-hidden">
-                        <img src="${item.img}" alt="${item.name}" class="max-h-full max-w-full object-contain filter drop-shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/120x120/10131b/ffffff?text=Error+Image'">
-                    </div>
-                    <div class="w-full text-center space-y-1">
-                        <div class="text-xs font-bold text-gray-200 truncate">${item.name}</div>
-                        <div class="flex justify-between items-center bg-[#090b10] px-2 py-1.5 rounded-lg border border-[#151a24] mt-2 w-full">
-                            <div class="text-left">
-                                <span class="block text-[9px] text-gray-500 uppercase font-bold tracking-wider">Probability</span>
-                                <span class="text-xs font-extrabold text-cyan-400">${item.chance}</span>
-                            </div>
-                            <div class="text-right">
-                                <span class="block text-[9px] text-gray-500 uppercase font-bold tracking-wider">Estimated Price</span>
-                                <span id="price-grid-${item.id}" class="text-xs font-black text-rose-400">$${item.price.toFixed(2)}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-            // Re-inicializar iconos de Lucide tras inyectar elementos al DOM
-            lucide.createIcons();
-        }
-        function renderSelectorList() {
-            const listContainer = document.getElementById('cases-selector-list');
-            listContainer.innerHTML = '';
-            dropItems.forEach(item => {
-                const btn = document.createElement('button');
-                btn.onclick = () => selectCaseForChart(item.id);
-                btn.id = `selector-${item.id}`;
-                btn.className = `w-full flex items-center justify-between p-3 rounded-xl border border-[#1b212f] bg-[#0c0f16]/60 hover:bg-[#131822] transition text-left ${item.id === selectedCaseId ? 'border-rose-500/40 bg-[#161a26]' : ''}`;
-                btn.innerHTML = `
-                    <div class="flex items-center gap-3 truncate">
-                        <div class="w-8 h-8 flex-shrink-0 bg-black/40 rounded-lg p-1 border border-white/5 flex items-center justify-center">
-                            <img src="${item.img}" alt="" class="max-h-full max-w-full object-contain" onerror="this.onerror=null; this.src='https://placehold.co/40x40/10131b/ffffff?text=Item'">
-                        </div>
-                        <div class="truncate">
-                            <span class="block text-xs font-bold text-gray-200 truncate">${item.name}</span>
-                            <span class="block text-[10px] text-gray-500 truncate">${item.type}</span>
-                        </div>
-                    </div>
-                    <div class="text-right flex-shrink-0 pl-2">
-                        <span id="price-list-${item.id}" class="text-sm font-black text-rose-400">$${item.price.toFixed(2)}</span>
-                    </div>
-                `;
-                listContainer.appendChild(btn);
-            });
-        }
-        function selectCaseForChart(caseId) {
-            selectedCaseId = caseId;
-            const item = dropItems.find(i => i.id === caseId);
-            if (!item) return;
-            // Actualizar UI del Selector
-            dropItems.forEach(i => {
-                const el = document.getElementById(`selector-${i.id}`);
-                if (el) {
-                    if (i.id === caseId) {
-                        el.classList.add('border-rose-500/40', 'bg-[#161a26]');
-                    } else {
-                        el.classList.remove('border-rose-500/40', 'bg-[#161a26]');
-                    }
-                }
-            });
-            // Actualizar cabecera de gráfica
-            document.getElementById('chart-case-name').innerText = item.name;
-            document.getElementById('chart-case-price').innerText = `$${item.price.toFixed(2)}`;
-            // Renderizar la gráfica Chart.js
-            const ctx = document.getElementById('analyticsChart').getContext('2d');
-           
-            if (chartInstance) {
-                chartInstance.destroy();
+
+        function toggleAuthMode() {
+            isSignUpMode = !isSignUpMode;
+            const btn = document.getElementById('authSubmitBtn');
+            const text = document.getElementById('switchModeText');
+            if (isSignUpMode) {
+                btn.innerText = "Registrarse y Enviar Código";
+                text.innerText = "¿Ya tienes cuenta? Inicia sesión";
+            } else {
+                btn.innerText = "Iniciar Sesión";
+                text.innerText = "¿No tienes cuenta? Regístrate";
             }
-            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-            gradient.addColorStop(0, 'rgba(244, 63, 94, 0.25)');
-            gradient.addColorStop(1, 'rgba(244, 63, 94, 0.0)');
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Current'],
-                    datasets: [{
-                        label: 'Price ($)',
-                        data: item.history,
-                        borderColor: '#f43f5e',
-                        borderWidth: 3,
-                        pointBackgroundColor: '#f43f5e',
-                        pointHoverRadius: 6,
-                        tension: 0.4,
-                        fill: true,
-                        backgroundColor: gradient
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#64748b', font: { family: 'Rajdhani', weight: 'bold' } } },
-                        y: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#64748b', font: { family: 'Rajdhani', weight: 'bold' } } }
-                    }
-                }
-            });
         }
-        // Bucle de simulación para fluctuaciones en vivo
-        function startLiveMarketSimulation() {
-            setInterval(() => {
-                dropItems.forEach(item => {
-                    const changePercent = (Math.random() * 5 - 2.5) / 100; // Variación entre -2.5% y +2.5%
-                    item.price += item.price * changePercent;
-                    if (item.price < 0.03) item.price = 0.03;
-                    item.history[item.history.length - 1] = item.price;
-                    const gridPrice = document.getElementById(`price-grid-${item.id}`);
-                    const listPrice = document.getElementById(`price-list-${item.id}`);
-                    if (gridPrice) {
-                        gridPrice.innerText = `$${item.price.toFixed(2)}`;
-                        gridPrice.classList.add('price-flash');
-                        setTimeout(() => gridPrice.classList.remove('price-flash'), 800);
-                    }
-                    if (listPrice) {
-                        listPrice.innerText = `$${item.price.toFixed(2)}`;
-                    }
-                    if (item.id === selectedCaseId) {
-                        const chartPrice = document.getElementById('chart-case-price');
-                        if (chartPrice) chartPrice.innerText = `$${item.price.toFixed(2)}`;
-                        if (chartInstance) {
-                            chartInstance.data.datasets[0].data = item.history;
-                            chartInstance.update('none');
-                        }
+
+        async function handleAuthForm(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmailInput').value;
+            const password = document.getElementById('loginPassInput').value;
+
+            if (isSignUpMode) {
+                // Registro (Envía código de verificación OTP por correo)
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: { full_name: email.split('@')[0] }
                     }
                 });
-            }, 4000);
+
+                if (error) {
+                    alert("Error en registro: " + error.message);
+                    return;
+                }
+
+                pendingEmail = email;
+                toggleLoginModal();
+                document.getElementById('verifyModal').style.display = 'flex';
+            } else {
+                // Inicio de sesión normal
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (error) {
+                    alert("Error: " + error.message);
+                    return;
+                }
+                toggleLoginModal();
+                mostrarToastPersonalizado("¡Bienvenido de nuevo!");
+            }
         }
-        // Inicializador de la App
-        window.addEventListener('DOMContentLoaded', () => {
-            handleIntroLoader();
-            renderDropsGrid();
-            renderSelectorList();
-            startLiveMarketSimulation();
-        });
+
+        async function verificarCodigoOTP(e) {
+            e.preventDefault();
+            const token = document.getElementById('otpCodeInput').value;
+
+            const { data, error } = await supabaseClient.auth.verifyOtp({
+                email: pendingEmail,
+                token: token,
+                type: 'signup'
+            });
+
+            if (error) {
+                alert("Código incorrecto o caducado: " + error.message);
+                return;
+            }
+
+            document.getElementById('verifyModal').style.display = 'none';
+            mostrarToastPersonalizado("¡Cuenta verificada con éxito!");
+        }
+
+        async function loginDiscord() {
+            const { data, error } = await supabaseClient.auth.signInWithOAuth({
+                provider: 'discord',
+                options: {
+                    redirectTo: window.location.origin
+                }
+            });
+            if (error) {
+                alert("Error al iniciar sesión con Discord: " + error.message);
+            }
+        }
+
+        function mostrarRecuperacion() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('forgotModal').style.display = 'flex';
+        }
+
+        function cerrarRecuperacion() {
+            document.getElementById('forgotModal').style.display = 'none';
+        }
+
+        async function enviarRecuperacion(e) {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmailInput').value;
+
+            const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin,
+            });
+
+            if (error) {
+                alert("Error: " + error.message);
+                return;
+            }
+
+            cerrarRecuperacion();
+            mostrarToastPersonalizado("Correo de recuperación enviado");
+        }
+
+        function cerrarModalVerify() {
+            document.getElementById('verifyModal').style.display = 'none';
+        }
+
+        async function cerrarSesion() {
+            await supabaseClient.auth.signOut();
+            document.getElementById('profileModal').style.display = 'none';
+            actualizarUIUsuario(null);
+            mostrarToastPersonalizado("Sesión cerrada");
+        }
+
+        function cargarDatosPerfilEnModal() {
+            supabaseClient.auth.getUser().then(({ data: { user } }) => {
+                if (user) {
+                    const meta = user.user_metadata || {};
+                    document.getElementById('profileNameInput').value = meta.full_name || user.email.split('@')[0];
+                    document.getElementById('profileAvatarInput').value = meta.avatar_url || '';
+                }
+            });
+        }
+
+        async function guardarPerfil(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('profileNameInput').value;
+            const avatarUrl = document.getElementById('profileAvatarInput').value;
+
+            const { data, error } = await supabaseClient.auth.updateUser({
+                data: {
+                    full_name: fullName,
+                    avatar_url: avatarUrl
+                }
+            });
+
+            if (error) {
+                alert("Error al actualizar perfil: " + error.message);
+                return;
+            }
+
+            toggleProfileModal();
+            actualizarUIUsuario(data.user);
+            mostrarToastPersonalizado("¡Perfil actualizado con éxito!");
+        }
+
+        function actualizarUIUsuario(user) {
+            const container = document.getElementById('headerAuthContainer');
+            if (user) {
+                const meta = user.user_metadata || {};
+                const nombre = meta.full_name || user.email.split('@')[0];
+                const avatar = meta.avatar_url;
+
+                let avatarHtml = `<div class="user-avatar">${nombre.charAt(0).toUpperCase()}</div>`;
+                if (avatar) {
+                    avatarHtml = `<img src="${avatar}" class="user-avatar" alt="Avatar">`;
+                }
+
+                container.innerHTML = `
+                    <div class="user-pill" onclick="toggleProfileModal()">
+                        ${avatarHtml}
+                        <span>${nombre}</span>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <button class="btn-main btn-login-open" onclick="toggleLoginModal()">🔑 Iniciar Sesión</button>
+                `;
+            }
+        }
+
+        function mostrarToastPersonalizado(texto) {
+            const toast = document.getElementById('toast');
+            toast.innerText = texto;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        function activarBusqueda() {
+            const banner = document.getElementById('help-banner');
+            banner.style.display = (banner.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function toggleModal() {
+            const modal = document.getElementById('updatesModal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function toggleHdFullModal() {
+            const modal = document.getElementById('hdFullModal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function copyId(id, nombre) {
+            navigator.clipboard.writeText(id).then(() => {
+                mostrarToastPersonalizado(`ID de ${nombre} copiado`);
+            }).catch(() => {
+                alert("ID: " + id);
+            });
+        }
+
+        function filterChannels() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.card').forEach(card => {
+                const title = card.querySelector('.card-title').innerText.toLowerCase();
+                const tag = card.querySelector('.card-tag').innerText.toLowerCase();
+                let matchesSearch = title.includes(query) || tag.includes(query);
+                let matchesFav = !favFilterActive || favoritos.includes(card.getAttribute('data-id'));
+                card.style.display = (matchesSearch && matchesFav) ? 'block' : 'none';
+            });
+            actualizarVisibilidadSecciones();
+        }
+
+        function toggleFav(id) {
+            const index = favoritos.indexOf(id);
+            if (index > -1) favoritos.splice(index, 1);
+            else favoritos.push(id);
+            localStorage.setItem('sdj_favoritos', JSON.stringify(favoritos));
+            renderFavs();
+            if (favFilterActive) filterChannels();
+        }
+
+        function renderFavs() {
+            document.querySelectorAll('.card').forEach(card => {
+                const id = card.getAttribute('data-id');
+                const btn = card.querySelector('.fav-btn');
+                if (favoritos.includes(id)) btn.classList.add('is-fav');
+                else btn.classList.remove('is-fav');
+            });
+        }
+
+        function toggleFavFilter() {
+            favFilterActive = !favFilterActive;
+            const btn = document.getElementById('favFilterBtn');
+            if (favFilterActive) btn.classList.add('active');
+            else btn.classList.remove('active');
+            filterChannels();
+        }
+
+        function actualizarVisibilidadSecciones() {
+            document.querySelectorAll('.category-section').forEach(sec => {
+                const cards = sec.querySelectorAll('.card');
+                let tieneVisibles = false;
+                cards.forEach(c => { if (c.style.display !== 'none') tieneVisibles = true; });
+                sec.style.display = tieneVisibles ? 'block' : 'none';
+            });
+        }
     </script>
 </body>
 </html>
