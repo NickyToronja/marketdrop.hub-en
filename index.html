@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDJ | Stream Center Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Oswald:wght@700&display=swap" rel="stylesheet">
-    
-    <!-- LIBRERÍA DE SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -17,6 +15,12 @@
             --movistar-blue: #00bcff; --champions-blue: #001e4e; 
             --text-main: #ffffff; --transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
             --live-red: #ff0000; --fav-gold: #f1c40f; --Ace-search: #b4dd1e;
+            --border-color: #222;
+        }
+
+        body.light-theme {
+            --bg-deep: #f0f2f5; --bg-stripe: #e4e6eb; --card-bg: #ffffff;
+            --text-main: #1c1e21; --border-color: #ccd0d5;
         }
 
         @keyframes stripe-move { 0% { background-position: 0 0; } 100% { background-position: 100px 100px; } }
@@ -26,30 +30,30 @@
             margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh;
             background-image: linear-gradient(135deg, var(--bg-stripe) 25%, transparent 25%, transparent 50%, var(--bg-stripe) 50%, var(--bg-stripe) 75%, transparent 75%, transparent);
             background-size: 80px 80px; animation: stripe-move 12s linear infinite;
-            overflow-x: hidden;
+            overflow-x: hidden; transition: background-color 0.3s, color 0.3s;
         }
 
         header {
-            width: 100%; background: rgba(10, 10, 12, 0.95); backdrop-filter: blur(10px);
-            padding: 20px 0; text-align: center; border-bottom: 2px solid var(--accent-neon);
+            width: 100%; background: var(--bg-deep); backdrop-filter: blur(10px);
+            padding: 20px 40px; text-align: center; border-bottom: 2px solid var(--accent-neon);
             position: sticky; top: 0; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; padding-left: 40px; padding-right: 40px;
+            display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;
         }
 
         .logo-sdj { height: 60px; border-radius: 12px; border: 1px solid var(--accent-neon); }
         
         .header-auth { display: flex; align-items: center; gap: 15px; }
-        .user-pill { background: var(--card-bg); border: 1px solid var(--accent-neon); padding: 6px 14px; border-radius: 30px; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .user-pill:hover { background: #25252e; }
-        .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-neon); object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; }
+        .user-pill { background: var(--card-bg); border: 1px solid var(--accent-neon); padding: 6px 14px; border-radius: 30px; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; color: var(--text-main); }
+        .user-pill:hover { opacity: 0.8; }
+        .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-neon); object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; color: #fff; }
 
         .container { width: 100%; max-width: 1200px; padding: 30px 20px; box-sizing: border-box; z-index: 10; }
         h1 { font-family: 'Oswald'; font-size: 3rem; text-align: center; margin: 0 0 20px 0; letter-spacing: 2px; }
 
-        .controls-wrapper { display: flex; flex-direction: column; gap: 20px; align-items: center; margin-bottom: 50px; width: 100%; }
+        .controls-wrapper { display: flex; flex-direction: column; gap: 20px; align-items: center; margin-bottom: 30px; width: 100%; }
         .search-input {
-            width: 100%; max-width: 600px; padding: 15px 25px; border-radius: 30px; border: 2px solid #333;
-            background: var(--card-bg); color: white; font-size: 1rem; outline: none; transition: 0.3s;
+            width: 100%; max-width: 600px; padding: 15px 25px; border-radius: 30px; border: 2px solid var(--border-color);
+            background: var(--card-bg); color: var(--text-main); font-size: 1rem; outline: none; transition: 0.3s;
         }
         .search-input:focus { border-color: var(--accent-neon); box-shadow: 0 0 15px rgba(127, 90, 240, 0.3); }
 
@@ -62,10 +66,13 @@
         .btn-discord { background: var(--discord-color); }
         .btn-download { background: var(--f1-red); }
         .btn-updates { background: #444; border: 1px solid #666; }
-        .btn-fav-filter { background: #222; border: 1px solid #444; }
-        .btn-fav-filter.active { background: var(--fav-gold); color: #000; }
+        .btn-fav-filter { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); }
+        .btn-fav-filter.active { background: var(--fav-gold); color: #000; border-color: var(--fav-gold); }
         .btn-ace-search { background: var(--Ace-search); color: #000; }
         .btn-login-open { background: var(--accent-neon); }
+        .btn-theme { background: #6c757d; }
+        .btn-faq { background: #e67e22; }
+        .btn-epg { background: #9b59b6; }
 
         #help-banner {
             display: none; width: 100%; max-width: 1100px; box-sizing: border-box;
@@ -86,49 +93,58 @@
         .cat-fun { border-color: var(--accent-neon); color: var(--accent-neon); }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
-        .card { background: var(--card-bg); border-radius: 24px; overflow: hidden; border: 1px solid #222; transition: var(--transition); position: relative; }
-        .card:hover { transform: translateY(-5px); border-color: #444; }
+        .card { background: var(--card-bg); border-radius: 24px; overflow: hidden; border: 1px solid var(--border-color); transition: var(--transition); position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent-neon); }
         .fav-btn { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.6); border: none; color: #fff; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; z-index: 5; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
         .fav-btn.is-fav { color: var(--fav-gold); }
-        .card-img { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 3rem; border-bottom: 1px solid #222; }
+        .card-img { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 3rem; border-bottom: 1px solid var(--border-color); }
         .card-body { padding: 20px; }
-        .card-tag { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; display: block; opacity: 0.6; }
-        .card-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 15px 0; }
+        .card-tag { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; display: block; opacity: 0.7; }
+        .card-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 15px 0; color: var(--text-main); }
         .action-box { display: flex; gap: 8px; }
         .a-btn { flex: 1; padding: 10px; border-radius: 12px; border: none; cursor: pointer; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 5px; color: white; text-decoration: none; }
         .a-play { background: var(--accent-neon); }
-        .a-copy { background: #333; }
+        .a-copy { background: #333; color: #fff; }
+        body.light-theme .a-copy { background: #d1d5db; color: #111; }
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 200; justify-content: center; align-items: center; }
-        .modal-content { background: #1a1a20; width: 90%; max-width: 480px; border-radius: 25px; border: 2px solid var(--accent-neon); padding: 30px; position: relative; color: white; max-height: 85vh; overflow-y: auto; box-sizing: border-box; }
-        .modal-close { position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        .modal-content { background: var(--card-bg); width: 90%; max-width: 520px; border-radius: 25px; border: 2px solid var(--accent-neon); padding: 30px; position: relative; color: var(--text-main); max-height: 85vh; overflow-y: auto; box-sizing: border-box; }
+        .modal-close { position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer; }
         
+        .faq-item { margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .faq-q { font-weight: 700; color: var(--accent-neon); margin-bottom: 5px; font-size: 0.95rem; }
+        .faq-a { font-size: 0.85rem; opacity: 0.85; line-height: 1.4; }
+
+        .epg-slot { background: rgba(127, 90, 240, 0.08); border-left: 4px solid var(--accent-neon); padding: 12px; border-radius: 8px; margin-bottom: 10px; }
+        .epg-time { font-size: 0.75rem; font-weight: bold; color: var(--accent-neon); text-transform: uppercase; }
+        .epg-desc { font-size: 0.9rem; font-weight: 600; margin-top: 3px; }
+
         #cookie-banner {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(16, 16, 22, 0.98);
+            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg);
             border-top: 2px solid var(--accent-neon); padding: 20px; box-sizing: border-box;
             z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; text-align: center;
         }
-        .cookie-content { max-width: 800px; font-size: 0.9rem; color: #ccc; line-height: 1.5; }
+        .cookie-content { max-width: 800px; font-size: 0.9rem; opacity: 0.8; line-height: 1.5; }
         .cookie-buttons { display: flex; gap: 10px; }
         .btn-cookie { padding: 10px 20px; border-radius: 30px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; border: none; cursor: pointer; }
         .btn-accept-cookie { background: var(--accent-neon); color: white; }
         .btn-reject-cookie { background: #333; color: white; }
 
-        .login-input { width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #333; background: #121216; color: white; margin-bottom: 15px; box-sizing: border-box; outline: none; }
+        .login-input { width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-deep); color: var(--text-main); margin-bottom: 15px; box-sizing: border-box; outline: none; }
         .login-input:focus { border-color: var(--accent-neon); }
         .form-link { color: var(--accent-neon); font-size: 0.8rem; cursor: pointer; text-decoration: underline; margin-bottom: 15px; display: inline-block; }
 
-        #toast { visibility: hidden; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 12px 30px; border-radius: 50px; font-weight: 800; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        #toast { visibility: hidden; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--text-main); color: var(--bg-deep); padding: 12px 30px; border-radius: 50px; font-weight: 800; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         #toast.show { visibility: visible; }
     </style>
 </head>
-<body>
+<body class="">
 
     <div id="cookie-banner" style="display: none;">
-        <div class="cookie-content">Utilizamos cookies para mejorar tu experiencia de navegación. Al hacer clic en "Aceptar", das tu consentimiento.</div>
+        <div class="cookie-content">Utilizamos cookies para mejorar tu experiencia de navegación. Al hacer clic en "Aceptar", das tu consentimiento.[cite: 2]</div>
         <div class="cookie-buttons">
-            <button class="btn-cookie btn-accept-cookie" onclick="aceptarCookies()">Aceptar todas</button>
-            <button class="btn-cookie btn-reject-cookie" onclick="rechazarCookies()">Rechazar</button>
+            <button class="btn-cookie btn-accept-cookie" onclick="aceptarCookies()">Aceptar todas[cite: 2]</button>
+            <button class="btn-cookie btn-reject-cookie" onclick="rechazarCookies()">Rechazar[cite: 2]</button>
         </div>
     </div>
 
@@ -144,203 +160,201 @@
         
         <div class="controls-wrapper">
             <div id="help-banner">
-                <div style="font-weight: 800; color: white; margin-bottom: 5px;">⚠️ ¿Problemas con un canal?</div>
-                <div style="color: #ccc; font-size: 0.95rem;">
-                    <a href="https://asesearch.vercel.app/" target="_blank" style="color: #00f3ff; font-weight: bold; text-decoration: underline;">Usa la web de búsqueda</a>, descarga el archivo .m3u y ábrelo con Ace Player.
+                <div style="font-weight: 800; margin-bottom: 5px;">⚠️ ¿Problemas con un canal?</div>[cite: 2]
+                <div style="font-size: 0.95rem;">
+                    <a href="https://asesearch.vercel.app/" target="_blank" style="color: #00f3ff; font-weight: bold; text-decoration: underline;">Usa la web de búsqueda</a>, descarga el archivo .m3u y ábrelo con Ace Player.[cite: 2]
                 </div>
             </div>
 
-            <input type="text" id="searchInput" class="search-input" placeholder="Buscar canal o categoría..." onkeyup="filterChannels()">
+            <input type="text" id="searchInput" class="search-input" placeholder="Buscar canal o categoría..." onkeyup="filterChannels()">[cite: 2]
             
             <div class="btn-group">
-                <a href="https://discord.gg/9xSdJfUQuw" target="_blank" class="btn-main btn-discord">💥 Discord</a>
-                <a href="https://www.mediafire.com/file/ct596bvy3u0n20e/Ace_Stream_Media_3.2.8.exe/file" target="_blank" class="btn-main btn-download">⛓️‍💥 Descargar Ace</a>
-                <button onclick="activarBusqueda()" class="btn-main btn-ace-search">🔑 ¿Canal no funciona?</button>
-                <button onclick="toggleModal()" class="btn-main btn-updates">🆕 Cambios</button>
-                <button onclick="toggleFavFilter()" id="favFilterBtn" class="btn-main btn-fav-filter">⭐ Favoritos</button>
+                <a href="https://discord.gg/9xSdJfUQuw" target="_blank" class="btn-main btn-discord">💥 Discord</a>[cite: 2]
+                <a href="https://www.mediafire.com/file/ct596bvy3u0n20e/Ace_Stream_Media_3.2.8.exe/file" target="_blank" class="btn-main btn-download">⛓️‍💥 Descargar Ace</a>[cite: 2]
+                <button onclick="activarBusqueda()" class="btn-main btn-ace-search">🔑 ¿Canal no funciona?</button>[cite: 2]
+                <button onclick="toggleModal()" class="btn-main btn-updates">🆕 Cambios</button>[cite: 2]
+                <button onclick="toggleFavFilter()" id="favFilterBtn" class="btn-main btn-fav-filter">⭐ Favoritos</button>[cite: 2]
+                <button onclick="toggleTheme()" class="btn-main btn-theme" id="themeBtn">☀️ Tema</button>
+                <button onclick="toggleFaqModal()" class="btn-main btn-faq">❓ FAQ</button>
+                <button onclick="toggleEpgModal()" class="btn-main btn-epg">📅 Guía EPG</button>
             </div>
         </div>
 
-        <!-- MOTOR -->
         <div class="category-section" id="sec-motor">
-            <div class="category-title cat-motor">🏎️ Deportes de Motor</div>
+            <div class="category-title cat-motor">🏎️ Deportes de Motor</div>[cite: 2]
             <div class="grid">
                 <div class="card" data-id="f1-dazn">
                     <button class="fav-btn" onclick="toggleFav('f1-dazn')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #e10600, #000);">🏎️</div>
-                    <div class="card-body"><span class="card-tag">Motor</span><h3 class="card-title">Fórmula 1 (DAZN)</h3>
-                        <div class="action-box"><a href="acestream://27d11bbeb3026231d52de16b1fac48da7a099247" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('27d11bbeb3026231d52de16b1fac48da7a099247', 'F1')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #e10600, #000);">🏎️</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">Motor</span><h3 class="card-title">Fórmula 1 (DAZN)</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://27d11bbeb3026231d52de16b1fac48da7a099247" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('27d11bbeb3026231d52de16b1fac48da7a099247', 'F1')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="f1-sky">
                     <button class="fav-btn" onclick="toggleFav('f1-sky')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #000);">🏎️</div>
-                    <div class="card-body"><span class="card-tag">Motor [EN]</span><h3 class="card-title">F1 TV</h3>
-                        <div class="action-box"><a href="acestream://5ebecc3b3091d0bc459a135839b57945d3349e1b" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('5ebecc3b3091d0bc459a135839b57945d3349e1b', 'F1 TV')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #000);">🏎️</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">Motor [EN]</span><h3 class="card-title">F1 TV</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://5ebecc3b3091d0bc459a135839b57945d3349e1b" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('5ebecc3b3091d0bc459a135839b57945d3349e1b', 'F1 TV')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="motogp-dazn">
                     <button class="fav-btn" onclick="toggleFav('motogp-dazn')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #333, #000);">🏍️</div>
-                    <div class="card-body"><span class="card-tag">Motor</span><h3 class="card-title">MotoGP (DAZN)</h3>
-                        <div class="action-box"><a href="acestream://c53bdb3be55d12c5188d25085f1bb16911c15cea" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('c53bdb3be55d12c5188d25085f1bb16911c15cea', 'MotoGP')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #333, #000);">🏍️</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">Motor</span><h3 class="card-title">MotoGP (DAZN)</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://c53bdb3be55d12c5188d25085f1bb16911c15cea" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('c53bdb3be55d12c5188d25085f1bb16911c15cea', 'MotoGP')">ID</button></div>[cite: 2]
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- FÚTBOL -->
         <div class="category-section" id="sec-futbol">
-            <div class="category-title cat-futbol">⚽ Fútbol</div>
+            <div class="category-title cat-futbol">⚽ Fútbol</div>[cite: 2]
             <div class="grid">
                 <div class="card" data-id="laliga-dazn">
                     <button class="fav-btn" onclick="toggleFav('laliga-dazn')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #2ecc71, #000);">⚽</div>
-                    <div class="card-body"><span class="card-tag">LaLiga</span><h3 class="card-title">DAZN LaLiga</h3>
-                        <div class="action-box"><a href="acestream://dda5d2cace9bc4cb0918e62bc50d657d4a10496a" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('dda5d2cace9bc4cb0918e62bc50d657d4a10496a', 'DAZN LaLiga')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #2ecc71, #000);">⚽</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">LaLiga</span><h3 class="card-title">DAZN LaLiga</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://dda5d2cace9bc4cb0918e62bc50d657d4a10496a" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('dda5d2cace9bc4cb0918e62bc50d657d4a10496a', 'DAZN LaLiga')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="laliga1-m">
                     <button class="fav-btn" onclick="toggleFav('laliga1-m')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #000);">⚽</div>
-                    <div class="card-body"><span class="card-tag">M+ LaLiga</span><h3 class="card-title">M+ LaLiga</h3>
-                        <div class="action-box"><a href="acestream://0b5f802f2de6488b4023d0f05195486e19d81ed7" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('0b5f802f2de6488b4023d0f05195486e19d81ed7', 'M+ LaLiga')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #000);">⚽</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">M+ LaLiga</span><h3 class="card-title">M+ LaLiga</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://0b5f802f2de6488b4023d0f05195486e19d81ed7" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('0b5f802f2de6488b4023d0f05195486e19d81ed7', 'M+ LaLiga')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="laliga2-m">
                     <button class="fav-btn" onclick="toggleFav('laliga2-m')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #000);">⚽</div>
-                    <div class="card-body"><span class="card-tag">M+ LaLiga</span><h3 class="card-title">M+ LaLiga 2</h3>
-                        <div class="action-box"><a href="acestream://caa631e8850e3eb5e7c039063dd8a339ccef1176" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('caa631e8850e3eb5e7c039063dd8a339ccef1176', 'M+ LaLiga 2')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #000);">⚽</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">M+ LaLiga</span><h3 class="card-title">M+ LaLiga 2</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://caa631e8850e3eb5e7c039063dd8a339ccef1176" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('caa631e8850e3eb5e7c039063dd8a339ccef1176', 'M+ LaLiga 2')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="m-hypermotion">
                     <button class="fav-btn" onclick="toggleFav('m-hypermotion')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #2ecc71, #27ae60);">⚽</div>
-                    <div class="card-body"><span class="card-tag">M+ Liga</span><h3 class="card-title">M+ Hypermotion</h3>
-                        <div class="action-box"><a href="acestream://4636ed75106cb00e9c70cc2029edf0a4df7ad73f" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('4636ed75106cb00e9c70cc2029edf0a4df7ad73f', 'M+ Hypermotion')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #2ecc71, #27ae60);">⚽</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">M+ Liga</span><h3 class="card-title">M+ Hypermotion</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://4636ed75106cb00e9c70cc2029edf0a4df7ad73f" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('4636ed75106cb00e9c70cc2029edf0a4df7ad73f', 'M+ Hypermotion')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="ucl-live">
                     <button class="fav-btn" onclick="toggleFav('ucl-live')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #001e4e, #000);">🏆</div>
-                    <div class="card-body"><span class="card-tag">Champions</span><h3 class="card-title">Liga de Campeones</h3>
-                        <div class="action-box"><a href="acestream://97df5b7824948972d041d8ca2a4d29c90b641bc9" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('97df5b7824948972d041d8ca2a4d29c90b641bc9', 'Champions')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #001e4e, #000);">🏆</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">Champions</span><h3 class="card-title">Liga de Campeones</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://97df5b7824948972d041d8ca2a4d29c90b641bc9" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('97df5b7824948972d041d8ca2a4d29c90b641bc9', 'Champions')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="ucl-live-2">
                     <button class="fav-btn" onclick="toggleFav('ucl-live-2')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #001e4e, #333);">🏆</div>
-                    <div class="card-body"><span class="card-tag">Champions</span><h3 class="card-title">Liga de Campeones 2</h3>
-                        <div class="action-box"><a href="acestream://338b5de78b0b40a6f9ca3cc0cf9be93341b9ceea" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('338b5de78b0b40a6f9ca3cc0cf9be93341b9ceea', 'Champions 2')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #001e4e, #333);">🏆</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">Champions</span><h3 class="card-title">Liga de Campeones 2</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://338b5de78b0b40a6f9ca3cc0cf9be93341b9ceea" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('338b5de78b0b40a6f9ca3cc0cf9be93341b9ceea', 'Champions 2')">ID</button></div>[cite: 2]
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- OTROS DEPORTES -->
         <div class="category-section" id="sec-deportes">
-            <div class="category-title cat-deportes">🏅 Otros Deportes</div>
+            <div class="category-title cat-deportes">🏅 Otros Deportes</div>[cite: 2]
             <div class="grid">
                 <div class="card" data-id="m-vamos">
                     <button class="fav-btn" onclick="toggleFav('m-vamos')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #7f5af0);">🏅</div>
-                    <div class="card-body"><span class="card-tag">Movistar+</span><h3 class="card-title">M+ Vamos</h3>
-                        <div class="action-box"><a href="acestream://7e4f6eb38e0d5ef52b7f8b96eb80c1d8c87dad16" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('7e4f6eb38e0d5ef52b7f8b96eb80c1d8c87dad16', 'M+ Vamos')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #7f5af0);">🏅</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">Movistar+</span><h3 class="card-title">M+ Vamos</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://7e4f6eb38e0d5ef52b7f8b96eb80c1d8c87dad16" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('7e4f6eb38e0d5ef52b7f8b96eb80c1d8c87dad16', 'M+ Vamos')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="m-deportes">
                     <button class="fav-btn" onclick="toggleFav('m-deportes')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #001e4e);">🏅</div>
-                    <div class="card-body"><span class="card-tag">Movistar+</span><h3 class="card-title">M+ Deportes</h3>
-                        <div class="action-box"><a href="acestream://acb510858f34c3c6fd5f79395b031abd6885c2b3" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('acb510858f34c3c6fd5f79395b031abd6885c2b3', 'M+ Deportes')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #001e4e);">🏅</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">Movistar+</span><h3 class="card-title">M+ Deportes</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://acb510858f34c3c6fd5f79395b031abd6885c2b3" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('acb510858f34c3c6fd5f79395b031abd6885c2b3', 'M+ Deportes')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="dazn-basket">
                     <button class="fav-btn" onclick="toggleFav('dazn-basket')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #ff9800, #333);">🏀</div>
-                    <div class="card-body"><span class="card-tag">DAZN</span><h3 class="card-title">DAZN Baloncesto</h3>
-                        <div class="action-box"><a href="acestream://6fbd92735502bdebbf1ea58f4298e49759c0cf07" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('6fbd92735502bdebbf1ea58f4298e49759c0cf07', 'DAZN Basket')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #ff9800, #333);">🏀</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">DAZN</span><h3 class="card-title">DAZN Baloncesto</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://6fbd92735502bdebbf1ea58f4298e49759c0cf07" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('6fbd92735502bdebbf1ea58f4298e49759c0cf07', 'DAZN Basket')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="euro-1">
                     <button class="fav-btn" onclick="toggleFav('euro-1')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #001e4e, #3498db);">🎾</div>
-                    <div class="card-body"><span class="card-tag">Eurosport 1</span><h3 class="card-title">Eurosport 1</h3>
-                        <div class="action-box"><a href="acestream://48a589dbeab3544662fafd79888aada7d834cfe9" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('48a589dbeab3544662fafd79888aada7d834cfe9', 'Eurosport 1')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #001e4e, #3498db);">🎾</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">Eurosport 1</span><h3 class="card-title">Eurosport 1</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://48a589dbeab3544662fafd79888aada7d834cfe9" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('48a589dbeab3544662fafd79888aada7d834cfe9', 'Eurosport 1')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="euro-2">
                     <button class="fav-btn" onclick="toggleFav('euro-2')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #001e4e, #3498db);">🚴</div>
-                    <div class="card-body"><span class="card-tag">Eurosport 2</span><h3 class="card-title">Eurosport 2</h3>
-                        <div class="action-box"><a href="acestream://c6180a86440004748e2abe34d6f31eed8a218a3a" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('c6180a86440004748e2abe34d6f31eed8a218a3a', 'Eurosport 2')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #001e4e, #3498db);">🚴</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">Eurosport 2</span><h3 class="card-title">Eurosport 2</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://c6180a86440004748e2abe34d6f31eed8a218a3a" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('c6180a86440004748e2abe34d6f31eed8a218a3a', 'Eurosport 2')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="dazn1">
                     <button class="fav-btn" onclick="toggleFav('dazn1')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #3498db, #000);">📺</div>
-                    <div class="card-body"><span class="card-tag">DAZN</span><h3 class="card-title">DAZN 1</h3>
-                        <div class="action-box"><a href="acestream://d5b2c6b940cf3df5e8f9dc6f000f0ea23a10b151" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('d5b2c6b940cf3df5e8f9dc6f000f0ea23a10b151', 'DAZN 1')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #3498db, #000);">📺</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">DAZN</span><h3 class="card-title">DAZN 1</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://d5b2c6b940cf3df5e8f9dc6f000f0ea23a10b151" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('d5b2c6b940cf3df5e8f9dc6f000f0ea23a10b151', 'DAZN 1')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="dazn2">
                     <button class="fav-btn" onclick="toggleFav('dazn2')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #3498db, #000);">📺</div>
-                    <div class="card-body"><span class="card-tag">DAZN</span><h3 class="card-title">DAZN 2</h3>
-                        <div class="action-box"><a href="acestream://b0eabe0fdd02fdd165896236765a9b753a2ff516" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('b0eabe0fdd02fdd165896236765a9b753a2ff516', 'DAZN 2')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #3498db, #000);">📺</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">DAZN</span><h3 class="card-title">DAZN 2</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://b0eabe0fdd02fdd165896236765a9b753a2ff516" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('b0eabe0fdd02fdd165896236765a9b753a2ff516', 'DAZN 2')">ID</button></div>[cite: 2]
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- DEPORTES USA -->
         <div class="category-section" id="sec-usa">
-            <div class="category-title cat-usa">🏀 Deportes USA</div>
+            <div class="category-title cat-usa">🏀 Deportes USA</div>[cite: 2]
             <div class="grid">
                 <div class="card" data-id="fox-sports-us">
                     <button class="fav-btn" onclick="toggleFav('fox-sports-us')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #ff8c00, #e62210);">🦊</div>
-                    <div class="card-body"><span class="card-tag">Fox Sports</span><h3 class="card-title">Fox Sports [US]</h3>
-                        <div class="action-box"><a href="acestream://c9c062941fbecb16ce29437f346ea7177d720898" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('c9c062941fbecb16ce29437f346ea7177d720898', 'Fox Sports US')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #ff8c00, #e62210);">🦊</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">Fox Sports</span><h3 class="card-title">Fox Sports [US]</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://c9c062941fbecb16ce29437f346ea7177d720898" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('c9c062941fbecb16ce29437f346ea7177d720898', 'Fox Sports US')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="nba-pro">
                     <button class="fav-btn" onclick="toggleFav('nba-pro')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #ff9800, #000);">🏀</div>
-                    <div class="card-body"><span class="card-tag">NBA</span><h3 class="card-title">NBA TV Pro</h3>
-                        <div class="action-box"><a href="acestream://e72d03fb9694164317260f684470be9ab781ed95" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('e72d03fb9694164317260f684470be9ab781ed95', 'NBA')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #ff9800, #000);">🏀</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">NBA</span><h3 class="card-title">NBA TV Pro</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://e72d03fb9694164317260f684470be9ab781ed95" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('e72d03fb9694164317260f684470be9ab781ed95', 'NBA')">ID</button></div>[cite: 2]
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ENTRETENIMIENTO -->
         <div class="category-section" id="sec-fun">
-            <div class="category-title cat-fun">🎭 Entretenimiento</div>
+            <div class="category-title cat-fun">🎭 Entretenimiento</div>[cite: 2]
             <div class="grid">
                 <div class="card" data-id="m-plus">
                     <button class="fav-btn" onclick="toggleFav('m-plus')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #1a1a20);">📺</div>
-                    <div class="card-body"><span class="card-tag">Movistar+</span><h3 class="card-title">Movistar+</h3>
-                        <div class="action-box"><a href="acestream://1ab443f5b4beb6d586f19e8b25b9f9646cf2ab78" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('1ab443f5b4beb6d586f19e8b25b9f9646cf2ab78', 'Movistar+')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #00bcff, #1a1a20);">📺</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">Movistar+</span><h3 class="card-title">Movistar+</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://1ab443f5b4beb6d586f19e8b25b9f9646cf2ab78" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('1ab443f5b4beb6d586f19e8b25b9f9646cf2ab78', 'Movistar+')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="fox-comedy">
                     <button class="fav-btn" onclick="toggleFav('fox-comedy')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #ff3366, #1a1a20);">🎭</div>
-                    <div class="card-body"><span class="card-tag">Fox</span><h3 class="card-title">Fox Comedy</h3>
-                        <div class="action-box"><a href="acestream://default_id_placeholder" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('default_id_placeholder', 'Fox Comedy')">ID</button></div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #ff3366, #1a1a20);">🎭</div>[cite: 2]
+                    <div class="card-body"><span class="card-tag">Fox</span><h3 class="card-title">Fox Comedy</h3>[cite: 2]
+                        <div class="action-box"><a href="acestream://54e19e8b25b9f9646cf2ab781ab443f5b4beb6d58" class="a-btn a-play">Abrir</a><button class="a-btn a-copy" onclick="copyId('54e19e8b25b9f9646cf2ab781ab443f5b4beb6d58', 'Fox Comedy')">ID</button></div>[cite: 2]
                     </div>
                 </div>
                 <div class="card" data-id="peliculas-series">
                     <button class="fav-btn" onclick="toggleFav('peliculas-series')">★</button>
-                    <div class="card-img" style="background: linear-gradient(45deg, #9b59b6, #1a1a20);">🎬</div>
+                    <div class="card-img" style="background: linear-gradient(45deg, #9b59b6, #1a1a20);">🎬</div>[cite: 2]
                     <div class="card-body">
-                        <span class="card-tag">Streaming Web</span>
-                        <h3 class="card-title">Películas y Series</h3>
+                        <span class="card-tag">Streaming Web</span>[cite: 2]
+                        <h3 class="card-title">Películas y Series</h3>[cite: 2]
                         <div class="action-box">
-                            <button class="a-btn a-play" onclick="toggleHdFullModal()">Abrir</button>
+                            <button class="a-btn a-play" onclick="toggleHdFullModal()">Abrir</button>[cite: 2]
                         </div>
                     </div>
                 </div>
@@ -354,25 +368,59 @@
         <div class="modal-content">
             <button class="modal-close" onclick="toggleModal()">&times;</button>
             <h2 style="font-family: 'Oswald'; color: var(--accent-neon);">🆕 NOTAS DE ACTUALIZACIÓN</h2>
-            <hr style="border-color: #333; margin-bottom: 15px;">
+            <hr style="border-color: var(--border-color); margin-bottom: 15px;">
             <ul style="padding-left: 20px; line-height: 1.6;">
-                <li>Sistema de usuarios avanzado con perfil personalizado.</li>
-                <li>Inicio de sesión con Discord y Código de Verificación OTP.</li>
-                <li>Recuperación de contraseña por email integrada.</li>
+                <li>Modo Claro / Modo Oscuro añadido.</li>
+                <li>Guía EPG automática por días de la semana integrada.</li>
+                <li>Sección de Preguntas Frecuentes (FAQ) disponible.</li>
             </ul>
         </div>
     </div>
 
-    <!-- MODAL DE HDFULL -->
+    <!-- MODAL DE FAQ -->
+    <div class="modal-overlay" id="faqModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="toggleFaqModal()">&times;</button>
+            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); margin-bottom: 15px;">❓ PREGUNTAS FRECUENTES</h2>
+            <hr style="border-color: var(--border-color); margin-bottom: 15px;">
+            <div class="faq-item">
+                <div class="faq-q">¿Por qué se queda cargando (buffering)?</div>
+                <div class="faq-a">Ace Stream depende de conexiones P2P (torrents). Si un canal tiene pocos usuarios conectados (peers), la velocidad baja. Prueba abriendo otro enlace o usa un reproductor compatible.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">¿Cómo abro los enlaces en el móvil?</div>
+                <div class="faq-a">Necesitas tener instalada la aplicación de Ace Stream para Android y un reproductor como VLC. Al hacer click en "Abrir", el móvil enviará la señal directamente a la app.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">¿Qué hago si el botón "Abrir" no funciona?</div>
+                <div class="faq-a">Copia el ID del canal con el botón "ID" y pégalo manualmente dentro de la aplicación de Ace Player o usa la herramienta de búsqueda auxiliar de la web.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE GUÍA EPG AUTOMÁTICA -->
+    <div class="modal-overlay" id="epgModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="toggleEpgModal()">&times;</button>
+            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); margin-bottom: 5px;">📅 GUÍA DE PROGRAMACIÓN</h2>
+            <p id="epgCurrentDaySubtitle" style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 15px;"></p>
+            <hr style="border-color: var(--border-color); margin-bottom: 15px;">
+            <div id="epgContainerContent">
+                <!-- Se rellena automáticamente con JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL HDFULL -->
     <div class="modal-overlay" id="hdFullModal">
         <div class="modal-content" style="text-align: center;">
             <button class="modal-close" onclick="toggleHdFullModal()">&times;</button>
-            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); margin-bottom: 10px;">🎬 PELÍCULAS Y SERIES</h2>
-            <hr style="border-color: #333; margin-bottom: 15px;">
-            <p style="color: #ccc; font-size: 0.95rem; line-height: 1.5;">Plataforma web externa <b>hdfull.cv</b>.</p>
-            <div style="background: #25252e; border: 1px solid #333; border-radius: 12px; padding: 15px; margin: 20px 0; text-align: left;">
-                <div style="margin-bottom: 8px;"><b>Usuario:</b> <span style="color: #00f3ff;">ManoloElPobre</span></div>
-                <div><b>Contraseña:</b> <span style="color: #00f3ff;">soyPobre</span></div>
+            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); margin-bottom: 10px;">🎬 PELÍCULAS Y SERIES</h2>[cite: 2]
+            <hr style="border-color: var(--border-color); margin-bottom: 15px;">
+            <p style="font-size: 0.95rem; line-height: 1.5;">Plataforma web externa <b>hdfull.cv</b>.</p>[cite: 2]
+            <div style="background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin: 20px 0; text-align: left;">
+                <div style="margin-bottom: 8px;"><b>Usuario:</b> <span style="color: #00f3ff;">ManoloElPobre</span></div>[cite: 2]
+                <div><b>Contraseña:</b> <span style="color: #00f3ff;">soyPobre</span></div>[cite: 2]
             </div>
             <a href="https://hdfull.cv" target="_blank" class="btn-main a-play" style="display: inline-flex; width: 100%; box-sizing: border-box; justify-content: center; padding: 12px; font-size: 0.9rem;">
                 Ir a hdfull.cv 🚀
@@ -380,313 +428,388 @@
         </div>
     </div>
 
-    <!-- MODAL DE INICIO DE SESIÓN -->
+    <!-- MODAL LOGIN -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-content">
             <button class="modal-close" onclick="toggleLoginModal()">&times;</button>
-            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); text-align: center; margin-bottom: 5px;">🔑 CUENTA SDJ</h2>
-            <p style="text-align: center; color: #aaa; font-size: 0.85rem; margin-bottom: 20px;">Accede con tu cuenta o Discord</p>
+            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); text-align: center; margin-bottom: 5px;">🔑 CUENTA SDJ</h2>[cite: 2]
+            <p style="text-align: center; opacity: 0.7; font-size: 0.85rem; margin-bottom: 20px;">Accede con tu cuenta o Discord</p>[cite: 2]
             
             <button type="button" class="btn-main btn-discord" onclick="loginDiscord()" style="width: 100%; justify-content: center; margin-bottom: 15px; padding: 12px;">
-                💬 Continuar con Discord
+                💬 Continuar con Discord[cite: 2]
             </button>
 
-            <div style="text-align: center; color: #555; margin-bottom: 15px; font-size: 0.8rem;">O por correo electrónico</div>
+            <div style="text-align: center; opacity: 0.5; margin-bottom: 15px; font-size: 0.8rem;">O por correo electrónico</div>[cite: 2]
 
             <form onsubmit="handleAuthForm(event)" id="authFormElement">
-                <input type="email" id="loginEmailInput" class="login-input" placeholder="Correo electrónico" required>
-                <input type="password" id="loginPassInput" class="login-input" placeholder="Contraseña" required>
+                <input type="email" id="loginEmailInput" class="login-input" placeholder="Correo electrónico" required>[cite: 2]
+                <input type="password" id="loginPassInput" class="login-input" placeholder="Contraseña" required>[cite: 2]
                 
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span class="form-link" onclick="mostrarRecuperacion()">¿Olvidaste tu contraseña?</span>
-                    <span class="form-link" onclick="toggleAuthMode()" id="switchModeText">¿No tienes cuenta? Regístrate</span>
+                    <span class="form-link" onclick="mostrarRecuperacion()">¿Olvidaste tu contraseña?</span>[cite: 2]
+                    <span class="form-link" onclick="toggleAuthMode()" id="switchModeText">¿No tienes cuenta? Regístrate</span>[cite: 2]
                 </div>
 
                 <button type="submit" id="authSubmitBtn" class="btn-main btn-login-open" style="width: 100%; justify-content: center; padding: 12px; margin-top: 10px;">
-                    Iniciar Sesión
+                    Iniciar Sesión[cite: 2]
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL DE CÓDIGO DE VERIFICACIÓN (OTP) -->
+    <!-- MODAL VERIFY -->
     <div class="modal-overlay" id="verifyModal">
         <div class="modal-content" style="text-align: center;">
-            <h2 style="font-family: 'Oswald'; color: var(--accent-neon);">🛡️ VERIFICACIÓN DE CUENTA</h2>
-            <p style="color: #ccc; font-size: 0.85rem; margin-bottom: 20px;">Hemos enviado un código de 6 dígitos a tu correo electrónico. Introdúcelo abajo:</p>
+            <h2 style="font-family: 'Oswald'; color: var(--accent-neon);">🛡️ VERIFICACIÓN DE CUENTA</h2>[cite: 2]
+            <p style="opacity: 0.8; font-size: 0.85rem; margin-bottom: 20px;">Hemos enviado un código de 6 dígitos a tu correo electrónico. Introdúcelo abajo:</p>[cite: 2]
             
             <form onsubmit="verificarCodigoOTP(event)">
-                <input type="text" id="otpCodeInput" class="login-input" placeholder="Ej: 489201" maxlength="6" style="text-align: center; font-size: 1.5rem; letter-spacing: 5px;" required>
+                <input type="text" id="otpCodeInput" class="login-input" placeholder="Ej: 489201" maxlength="6" style="text-align: center; font-size: 1.5rem; letter-spacing: 5px;" required>[cite: 2]
                 <button type="submit" class="btn-main btn-login-open" style="width: 100%; justify-content: center; padding: 12px;">
-                    Verificar Código
+                    Verificar Código[cite: 2]
                 </button>
             </form>
-            <span class="form-link" onclick="cerrarModalVerify()" style="margin-top: 15px; display: inline-block;">Cancelar</span>
+            <span class="form-link" onclick="cerrarModalVerify()" style="margin-top: 15px; display: inline-block;">Cancelar</span>[cite: 2]
         </div>
     </div>
 
-    <!-- MODAL DE RECUPERACIÓN DE CONTRASEÑA -->
+    <!-- MODAL FORGOT -->
     <div class="modal-overlay" id="forgotModal">
         <div class="modal-content">
             <button class="modal-close" onclick="cerrarRecuperacion()">&times;</button>
-            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); text-align: center; margin-bottom: 5px;">🔄 RECUPERAR CUENTA</h2>
-            <p style="text-align: center; color: #aaa; font-size: 0.85rem; margin-bottom: 20px;">Introduce tu email y te enviaremos instrucciones</p>
+            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); text-align: center; margin-bottom: 5px;">🔄 RECUPERAR CUENTA</h2>[cite: 2]
+            <p style="text-align: center; opacity: 0.8; font-size: 0.85rem; margin-bottom: 20px;">Introduce tu email y te enviaremos instrucciones</p>[cite: 2]
             
             <form onsubmit="enviarRecuperacion(event)">
-                <input type="email" id="forgotEmailInput" class="login-input" placeholder="Tu correo electrónico" required>
+                <input type="email" id="forgotEmailInput" class="login-input" placeholder="Tu correo electrónico" required>[cite: 2]
                 <button type="submit" class="btn-main btn-login-open" style="width: 100%; justify-content: center; padding: 12px;">
-                    Enviar Enlace de Recuperación
+                    Enviar Enlace de Recuperación[cite: 2]
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL DE PERFIL Y PERSONALIZACIÓN -->
+    <!-- MODAL PROFILE -->
     <div class="modal-overlay" id="profileModal">
         <div class="modal-content">
             <button class="modal-close" onclick="toggleProfileModal()">&times;</button>
-            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); text-align: center; margin-bottom: 5px;">⚙️ MI PERFIL</h2>
-            <p style="text-align: center; color: #aaa; font-size: 0.85rem; margin-bottom: 20px;">Personaliza tu nombre y foto de perfil</p>
+            <h2 style="font-family: 'Oswald'; color: var(--accent-neon); text-align: center; margin-bottom: 5px;">⚙️ MI PERFIL</h2>[cite: 2]
+            <p style="text-align: center; opacity: 0.8; font-size: 0.85rem; margin-bottom: 20px;">Personaliza tu nombre y foto de perfil</p>[cite: 2]
             
             <form onsubmit="guardarPerfil(event)">
-                <label style="font-size: 0.75rem; color: #aaa; display: block; margin-bottom: 5px;">Nombre de usuario:</label>
-                <input type="text" id="profileNameInput" class="login-input" placeholder="Tu nombre" required>
+                <label style="font-size: 0.75rem; opacity: 0.8; display: block; margin-bottom: 5px;">Nombre de usuario:</label>[cite: 2]
+                <input type="text" id="profileNameInput" class="login-input" placeholder="Tu nombre" required>[cite: 2]
                 
-                <label style="font-size: 0.75rem; color: #aaa; display: block; margin-bottom: 5px;">URL de tu foto de perfil (Imagen):</label>
-                <input type="url" id="profileAvatarInput" class="login-input" placeholder="https://ejemplo.com/foto.jpg">
+                <label style="font-size: 0.75rem; opacity: 0.8; display: block; margin-bottom: 5px;">URL de tu foto de perfil (Imagen):</label>[cite: 2]
+                <input type="url" id="profileAvatarInput" class="login-input" placeholder="https://ejemplo.com/foto.jpg">[cite: 2]
                 
                 <button type="submit" class="btn-main btn-login-open" style="width: 100%; justify-content: center; padding: 12px; margin-top: 10px;">
-                    Guardar Cambios
+                    Guardar Cambios[cite: 2]
                 </button>
             </form>
 
             <button class="btn-main btn-updates" onclick="cerrarSesion()" style="width: 100%; justify-content: center; padding: 12px; margin-top: 15px; background: #e10600;">
-                Cerrar Sesión
+                Cerrar Sesión[cite: 2]
             </button>
         </div>
     </div>
 
-    <div id="toast">Copiado al portapapeles</div>
+    <div id="toast">Copiado al portapapeles</div>[cite: 2]
 
     <script>
-        // CONFIGURACIÓN DE SUPABASE
-        const SUPABASE_URL = 'https://vzcsgteonmomcfvqkbsx.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_dIqVef-rsoRykz06VPuYwA_cqPG7ezP';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const SUPABASE_URL = 'https://bdhamewagdxdodtaneib.supabase.co';[cite: 2]
+        const SUPABASE_KEY = 'sb_publishable_oFcFbu2cbIUmkcSv8rit0w_VRPGzckv';[cite: 2]
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);[cite: 2]
 
-        let favFilterActive = false;
-        let favoritos = JSON.parse(localStorage.getItem('sdj_favoritos')) || [];
-        let isSignUpMode = false;
-        let pendingEmail = '';
+        let favFilterActive = false;[cite: 2]
+        let favoritos = JSON.parse(localStorage.getItem('sdj_favoritos')) || [];[cite: 2]
+        let isSignUpMode = false;[cite: 2]
+        let pendingEmail = '';[cite: 2]
+        let currentUser = null;[cite: 2]
 
         window.addEventListener('DOMContentLoaded', async () => {
-            if (!localStorage.getItem('sdj_cookies_aceptadas')) {
-                document.getElementById('cookie-banner').style.display = 'flex';
+            // Cargar Tema Guardado
+            const savedTheme = localStorage.getItem('sdj_theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                document.getElementById('themeBtn').innerText = '🌙 Tema';
             }
-            renderFavs();
+
+            if (!localStorage.getItem('sdj_cookies_aceptadas')) {[cite: 2]
+                document.getElementById('cookie-banner').style.display = 'flex';[cite: 2]
+            }
+            renderFavs();[cite: 2]
 
             try {
-                const { data: { session } } = await supabaseClient.auth.getSession();
-                if (session) {
-                    actualizarUIUsuario(session.user);
+                const { data: { session } } = await supabaseClient.auth.getSession();[cite: 2]
+                if (session) {[cite: 2]
+                    currentUser = session.user;[cite: 2]
+                    actualizarUIUsuario(session.user);[cite: 2]
                 }
             } catch (err) {
-                console.error("Error al obtener sesión:", err);
+                console.error("Error al obtener sesión:", err);[cite: 2]
             }
 
-            // Escuchar cambios de autenticación
-            supabaseClient.auth.onAuthStateChange((event, session) => {
-                if (session) {
-                    actualizarUIUsuario(session.user);
+            supabaseClient.auth.onAuthStateChange((event, session) => {[cite: 2]
+                if (session) {[cite: 2]
+                    currentUser = session.user;[cite: 2]
+                    actualizarUIUsuario(session.user);[cite: 2]
                 } else {
-                    actualizarUIUsuario(null);
+                    currentUser = null;[cite: 2]
+                    actualizarUIUsuario(null);[cite: 2]
                 }
             });
         });
 
-        function aceptarCookies() {
-            localStorage.setItem('sdj_cookies_aceptadas', 'true');
-            document.getElementById('cookie-banner').style.display = 'none';
+        // ------------------ SISTEMA DE TEMA (MODO OSCURO/CLARO) ------------------
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            localStorage.setItem('sdj_theme', isLight ? 'light' : 'dark');
+            document.getElementById('themeBtn').innerText = isLight ? '🌙 Tema' : '☀️ Tema';
         }
 
-        function rechazarCookies() {
-            localStorage.setItem('sdj_cookies_aceptadas', 'false');
-            document.getElementById('cookie-banner').style.display = 'none';
-        }
-
-        function toggleLoginModal() {
-            const modal = document.getElementById('loginModal');
+        // ------------------ MODALES FAQ Y EPG ------------------
+        function toggleFaqModal() {
+            const modal = document.getElementById('faqModal');
             modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
         }
 
-        function toggleProfileModal() {
-            const modal = document.getElementById('profileModal');
+        function toggleEpgModal() {
+            const modal = document.getElementById('epgModal');
             if (modal.style.display === 'flex') {
                 modal.style.display = 'none';
             } else {
+                generarEpgAutomatica();
                 modal.style.display = 'flex';
-                cargarDatosPerfilEnModal();
             }
         }
 
-        function toggleAuthMode() {
-            isSignUpMode = !isSignUpMode;
-            const btn = document.getElementById('authSubmitBtn');
-            const text = document.getElementById('switchModeText');
-            if (isSignUpMode) {
-                btn.innerText = "Registrarse y Enviar Código";
-                text.innerText = "¿Ya tienes cuenta? Inicia sesión";
+        // EPG Automatizada por día de la semana (Sin requerir mantenimiento diario)
+        function generarEpgAutomatica() {
+            const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const hoy = new Date();
+            const diaNombre = diasSemana[hoy.getDay()];
+            const fechaStr = hoy.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+
+            document.getElementById('epgCurrentDaySubtitle').innerText = `Mostrando programación automática para hoy: ${diaNombre}, ${fechaStr}`;
+
+            const contenedor = document.getElementById('epgContainerContent');
+            let contenidoHtml = '';
+
+            // Lógica automatizada basada en el día actual
+            if (hoy.getDay() === 5) { // Viernes
+                contenidoHtml = `
+                    <div class="epg-slot"><div class="epg-time">10:00 - 12:00 [Fórmula 1]</div><div class="epg-desc">Entrenamientos Libres 1 y 2 (DAZN F1 / F1 TV)</div></div>
+                    <div class="epg-slot"><div class="epg-time">15:00 - 17:00 [MotoGP]</div><div class="epg-desc">Pruebas libres de Motociclismo</div></div>
+                    <div class="epg-slot"><div class="epg-time">21:00 en adelante [Fútbol]</div><div class="epg-desc">Inicios de jornada de LaLiga EA Sports / Hypermotion</div></div>
+                `;
+            } else if (hoy.getDay() === 6) { // Sábado
+                contenidoHtml = `
+                    <div class="epg-slot"><div class="epg-time">12:30 - 14:00 [Fórmula 1]</div><div class="epg-desc">Entrenamientos Libres 3 y Sesión de Clasificación F1</div></div>
+                    <div class="epg-slot"><div class="epg-time">16:15 - 23:00 [Fútbol]</div><div class="epg-desc">Partidos estelares de LaLiga (DAZN LaLiga / M+ LaLiga)</div></div>
+                    <div class="epg-slot"><div class="epg-time">Madrugada [Deportes USA]</div><div class="epg-desc">Partidos destacados de la temporada NBA TV Pro</div></div>
+                `;
+            } else if (hoy.getDay() === 0) { // Domingo
+                contenidoHtml = `
+                    <div class="epg-slot"><div class="epg-time">14:00 - 16:30 [MotoGP]</div><div class="epg-desc">Carreras oficiales de categorías Moto3, Moto2 y MotoGP</div></div>
+                    <div class="epg-slot"><div class="epg-time">15:00 - 17:30 [Fórmula 1]</div><div class="epg-desc">Gran Premio oficial (Previa y Carrera en directo)</div></div>
+                    <div class="epg-slot"><div class="epg-time">18:30 - 23:00 [Fútbol / Champions]</div><div class="epg-desc">Partidos clave de cierre de jornada y competiciones europeas</div></div>
+                `;
+            } else { // Lunes a Jueves (Entre semana)
+                contenidoHtml = `
+                    <div class="epg-slot"><div class="epg-time">18:00 - 21:00 [Polideportivo]</div><div class="epg-desc">Programas de análisis en M+ Vamos y Eurosport</div></div>
+                    <div class="epg-slot"><div class="epg-time">21:00 - 23:30 [Champions / Ligas]</div><div class="epg-desc">Jornadas de Liga de Campeones, Copa del Rey o partidos aplazados</div></div>
+                    <div class="epg-slot"><div class="epg-time">Todo el día</div><div class="epg-desc">Emisiones continuas de entretenimiento, Fox Comedy y streaming en HDFull</div></div>
+                `;
+            }
+
+            contenedor.innerHTML = contenidoHtml;
+        }
+
+        // ------------------ FUNCIONES PREVIAS MANTENIDAS ------------------
+        function aceptarCookies() {[cite: 2]
+            localStorage.setItem('sdj_cookies_aceptadas', 'true');[cite: 2]
+            document.getElementById('cookie-banner').style.display = 'none';[cite: 2]
+        }
+
+        function rechazarCookies() {[cite: 2]
+            localStorage.setItem('sdj_cookies_aceptadas', 'false');[cite: 2]
+            document.getElementById('cookie-banner').style.display = 'none';[cite: 2]
+        }
+
+        function toggleLoginModal() {[cite: 2]
+            const modal = document.getElementById('loginModal');[cite: 2]
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';[cite: 2]
+        }
+
+        function toggleProfileModal() {[cite: 2]
+            const modal = document.getElementById('profileModal');[cite: 2]
+            if (modal.style.display === 'flex') {[cite: 2]
+                modal.style.display = 'none';[cite: 2]
             } else {
-                btn.innerText = "Iniciar Sesión";
-                text.innerText = "¿No tienes cuenta? Regístrate";
+                modal.style.display = 'flex';[cite: 2]
+                cargarDatosPerfilEnModal();[cite: 2]
             }
         }
 
-        async function handleAuthForm(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmailInput').value;
-            const password = document.getElementById('loginPassInput').value;
+        function toggleAuthMode() {[cite: 2]
+            isSignUpMode = !isSignUpMode;[cite: 2]
+            const btn = document.getElementById('authSubmitBtn');[cite: 2]
+            const text = document.getElementById('switchModeText');[cite: 2]
+            if (isSignUpMode) {[cite: 2]
+                btn.innerText = "Registrarse y Enviar Código";[cite: 2]
+                text.innerText = "¿Ya tienes cuenta? Inicia sesión";[cite: 2]
+            } else {
+                btn.innerText = "Iniciar Sesión";[cite: 2]
+                text.innerText = "¿No tienes cuenta? Regístrate";[cite: 2]
+            }
+        }
 
-            if (isSignUpMode) {
-                // Registro (Envía código de verificación OTP por correo)
-                const { data, error } = await supabaseClient.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        data: { full_name: email.split('@')[0] }
+        async function handleAuthForm(e) {[cite: 2]
+            e.preventDefault();[cite: 2]
+            const email = document.getElementById('loginEmailInput').value;[cite: 2]
+            const password = document.getElementById('loginPassInput').value;[cite: 2]
+
+            if (isSignUpMode) {[cite: 2]
+                const { data, error } = await supabaseClient.auth.signUp({[cite: 2]
+                    email,[cite: 2]
+                    password,[cite: 2]
+                    options: {[cite: 2]
+                        data: { full_name: email.split('@')[0] }[cite: 2]
                     }
                 });
 
-                if (error) {
-                    alert("Error en registro: " + error.message);
-                    return;
+                if (error) {[cite: 2]
+                    alert("Error en registro: " + error.message);[cite: 2]
+                    return;[cite: 2]
                 }
 
-                pendingEmail = email;
-                toggleLoginModal();
-                document.getElementById('verifyModal').style.display = 'flex';
+                pendingEmail = email;[cite: 2]
+                toggleLoginModal();[cite: 2]
+                document.getElementById('verifyModal').style.display = 'flex';[cite: 2]
             } else {
-                // Inicio de sesión normal
-                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (error) {
-                    alert("Error: " + error.message);
-                    return;
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });[cite: 2]
+                if (error) {[cite: 2]
+                    alert("Error: " + error.message);[cite: 2]
+                    return;[cite: 2]
                 }
-                toggleLoginModal();
-                mostrarToastPersonalizado("¡Bienvenido de nuevo!");
+                toggleLoginModal();[cite: 2]
+                mostrarToastPersonalizado("¡Bienvenido de nuevo!");[cite: 2]
             }
         }
 
-        async function verificarCodigoOTP(e) {
-            e.preventDefault();
-            const token = document.getElementById('otpCodeInput').value;
+        async function verificarCodigoOTP(e) {[cite: 2]
+            e.preventDefault();[cite: 2]
+            const token = document.getElementById('otpCodeInput').value;[cite: 2]
 
-            const { data, error } = await supabaseClient.auth.verifyOtp({
-                email: pendingEmail,
-                token: token,
-                type: 'signup'
+            const { data, error } = await supabaseClient.auth.verifyOtp({[cite: 2]
+                email: pendingEmail,[cite: 2]
+                token: token,[cite: 2]
+                type: 'signup'[cite: 2]
             });
 
-            if (error) {
-                alert("Código incorrecto o caducado: " + error.message);
-                return;
+            if (error) {[cite: 2]
+                alert("Código incorrecto o caducado: " + error.message);[cite: 2]
+                return;[cite: 2]
             }
 
-            document.getElementById('verifyModal').style.display = 'none';
-            mostrarToastPersonalizado("¡Cuenta verificada con éxito!");
+            document.getElementById('verifyModal').style.display = 'none';[cite: 2]
+            mostrarToastPersonalizado("¡Cuenta verificada con éxito!");[cite: 2]
         }
 
-        async function loginDiscord() {
-            const { data, error } = await supabaseClient.auth.signInWithOAuth({
-                provider: 'discord',
-                options: {
-                    redirectTo: window.location.origin
-                }
-            });
-            if (error) {
-                alert("Error al iniciar sesión con Discord: " + error.message);
-            }
-        }
-
-        function mostrarRecuperacion() {
-            document.getElementById('loginModal').style.display = 'none';
-            document.getElementById('forgotModal').style.display = 'flex';
-        }
-
-        function cerrarRecuperacion() {
-            document.getElementById('forgotModal').style.display = 'none';
-        }
-
-        async function enviarRecuperacion(e) {
-            e.preventDefault();
-            const email = document.getElementById('forgotEmailInput').value;
-
-            const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                redirectTo: window.location.origin,
-            });
-
-            if (error) {
-                alert("Error: " + error.message);
-                return;
-            }
-
-            cerrarRecuperacion();
-            mostrarToastPersonalizado("Correo de recuperación enviado");
-        }
-
-        function cerrarModalVerify() {
-            document.getElementById('verifyModal').style.display = 'none';
-        }
-
-        async function cerrarSesion() {
-            await supabaseClient.auth.signOut();
-            document.getElementById('profileModal').style.display = 'none';
-            actualizarUIUsuario(null);
-            mostrarToastPersonalizado("Sesión cerrada");
-        }
-
-        function cargarDatosPerfilEnModal() {
-            supabaseClient.auth.getUser().then(({ data: { user } }) => {
-                if (user) {
-                    const meta = user.user_metadata || {};
-                    document.getElementById('profileNameInput').value = meta.full_name || user.email.split('@')[0];
-                    document.getElementById('profileAvatarInput').value = meta.avatar_url || '';
+        async function loginDiscord() {[cite: 2]
+            const { data, error } = await supabaseClient.auth.signInWithOAuth({[cite: 2]
+                provider: 'discord',[cite: 2]
+                options: {[cite: 2]
+                    redirectTo: 'https://nickytoronja.github.io/Ace-Player/'[cite: 2]
                 }
             });
+            if (error) {[cite: 2]
+                alert("Error al iniciar sesión con Discord: " + error.message);[cite: 2]
+            }
         }
 
-        async function guardarPerfil(e) {
-            e.preventDefault();
-            const fullName = document.getElementById('profileNameInput').value;
-            const avatarUrl = document.getElementById('profileAvatarInput').value;
+        function mostrarRecuperacion() {[cite: 2]
+            document.getElementById('loginModal').style.display = 'none';[cite: 2]
+            document.getElementById('forgotModal').style.display = 'flex';[cite: 2]
+        }
 
-            const { data, error } = await supabaseClient.auth.updateUser({
-                data: {
-                    full_name: fullName,
-                    avatar_url: avatarUrl
+        function cerrarRecuperacion() {[cite: 2]
+            document.getElementById('forgotModal').style.display = 'none';[cite: 2]
+        }
+
+        async function enviarRecuperacion(e) {[cite: 2]
+            e.preventDefault();[cite: 2]
+            const email = document.getElementById('forgotEmailInput').value;[cite: 2]
+
+            const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {[cite: 2]
+                redirectTo: window.location.origin,[cite: 2]
+            });
+
+            if (error) {[cite: 2]
+                alert("Error: " + error.message);[cite: 2]
+                return;[cite: 2]
+            }
+
+            cerrarRecuperacion();[cite: 2]
+            mostrarToastPersonalizado("Correo de recuperación enviado");[cite: 2]
+        }
+
+        function cerrarModalVerify() {[cite: 2]
+            document.getElementById('verifyModal').style.display = 'none';[cite: 2]
+        }
+
+        async function cerrarSesion() {[cite: 2]
+            await supabaseClient.auth.signOut();[cite: 2]
+            document.getElementById('profileModal').style.display = 'none';[cite: 2]
+            actualizarUIUsuario(null);[cite: 2]
+            mostrarToastPersonalizado("Sesión cerrada");[cite: 2]
+        }
+
+        function cargarDatosPerfilEnModal() {[cite: 2]
+            supabaseClient.auth.getUser().then(({ data: { user } }) => {[cite: 2]
+                if (user) {[cite: 2]
+                    const meta = user.user_metadata || {};[cite: 2]
+                    document.getElementById('profileNameInput').value = meta.full_name || user.email.split('@')[0];[cite: 2]
+                    document.getElementById('profileAvatarInput').value = meta.avatar_url || '';[cite: 2]
+                }
+            });
+        }
+
+        async function guardarPerfil(e) {[cite: 2]
+            e.preventDefault();[cite: 2]
+            const fullName = document.getElementById('profileNameInput').value;[cite: 2]
+            const avatarUrl = document.getElementById('profileAvatarInput').value;[cite: 2]
+
+            const { data, error } = await supabaseClient.auth.updateUser({[cite: 2]
+                data: {[cite: 2]
+                    full_name: fullName,[cite: 2]
+                    avatar_url: avatarUrl[cite: 2]
                 }
             });
 
-            if (error) {
-                alert("Error al actualizar perfil: " + error.message);
-                return;
+            if (error) {[cite: 2]
+                alert("Error al actualizar perfil: " + error.message);[cite: 2]
+                return;[cite: 2]
             }
 
-            toggleProfileModal();
-            actualizarUIUsuario(data.user);
-            mostrarToastPersonalizado("¡Perfil actualizado con éxito!");
+            toggleProfileModal();[cite: 2]
+            actualizarUIUsuario(data.user);[cite: 2]
+            mostrarToastPersonalizado("¡Perfil actualizado con éxito!");[cite: 2]
         }
 
-        function actualizarUIUsuario(user) {
-            const container = document.getElementById('headerAuthContainer');
-            if (user) {
-                const meta = user.user_metadata || {};
-                const nombre = meta.full_name || user.email.split('@')[0];
-                const avatar = meta.avatar_url;
+        function actualizarUIUsuario(user) {[cite: 2]
+            const container = document.getElementById('headerAuthContainer');[cite: 2]
 
-                let avatarHtml = `<div class="user-avatar">${nombre.charAt(0).toUpperCase()}</div>`;
-                if (avatar) {
-                    avatarHtml = `<img src="${avatar}" class="user-avatar" alt="Avatar">`;
+            if (user) {[cite: 2]
+                const meta = user.user_metadata || {};[cite: 2]
+                const nombre = meta.full_name || user.email?.split('@')[0] || 'Usuario';[cite: 2]
+                const avatar = meta.avatar_url;[cite: 2]
+
+                let avatarHtml = `<div class="user-avatar">${nombre.charAt(0).toUpperCase()}</div>`;[cite: 2]
+                if (avatar) {[cite: 2]
+                    avatarHtml = `<img src="${avatar}" class="user-avatar" alt="Avatar">`;[cite: 2]
                 }
 
                 container.innerHTML = `
@@ -694,88 +817,88 @@
                         ${avatarHtml}
                         <span>${nombre}</span>
                     </div>
-                `;
+                `;[cite: 2]
             } else {
                 container.innerHTML = `
                     <button class="btn-main btn-login-open" onclick="toggleLoginModal()">🔑 Iniciar Sesión</button>
-                `;
+                `;[cite: 2]
             }
         }
 
-        function mostrarToastPersonalizado(texto) {
-            const toast = document.getElementById('toast');
-            toast.innerText = texto;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
+        function mostrarToastPersonalizado(texto) {[cite: 2]
+            const toast = document.getElementById('toast');[cite: 2]
+            toast.innerText = texto;[cite: 2]
+            toast.classList.add('show');[cite: 2]
+            setTimeout(() => toast.classList.remove('show'), 2500);[cite: 2]
         }
 
-        function activarBusqueda() {
-            const banner = document.getElementById('help-banner');
-            banner.style.display = (banner.style.display === 'block') ? 'none' : 'block';
+        function activarBusqueda() {[cite: 2]
+            const banner = document.getElementById('help-banner');[cite: 2]
+            banner.style.display = (banner.style.display === 'block') ? 'none' : 'block';[cite: 2]
         }
 
-        function toggleModal() {
-            const modal = document.getElementById('updatesModal');
-            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        function toggleModal() {[cite: 2]
+            const modal = document.getElementById('updatesModal');[cite: 2]
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';[cite: 2]
         }
 
-        function toggleHdFullModal() {
-            const modal = document.getElementById('hdFullModal');
-            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        function toggleHdFullModal() {[cite: 2]
+            const modal = document.getElementById('hdFullModal');[cite: 2]
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';[cite: 2]
         }
 
-        function copyId(id, nombre) {
-            navigator.clipboard.writeText(id).then(() => {
-                mostrarToastPersonalizado(`ID de ${nombre} copiado`);
+        function copyId(id, nombre) {[cite: 2]
+            navigator.clipboard.writeText(id).then(() => {[cite: 2]
+                mostrarToastPersonalizado(`ID de ${nombre} copiado`);[cite: 2]
             }).catch(() => {
-                alert("ID: " + id);
+                alert("ID: " + id);[cite: 2]
             });
         }
 
-        function filterChannels() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.card').forEach(card => {
-                const title = card.querySelector('.card-title').innerText.toLowerCase();
-                const tag = card.querySelector('.card-tag').innerText.toLowerCase();
-                let matchesSearch = title.includes(query) || tag.includes(query);
-                let matchesFav = !favFilterActive || favoritos.includes(card.getAttribute('data-id'));
-                card.style.display = (matchesSearch && matchesFav) ? 'block' : 'none';
+        function filterChannels() {[cite: 2]
+            const query = document.getElementById('searchInput').value.toLowerCase();[cite: 2]
+            document.querySelectorAll('.card').forEach(card => {[cite: 2]
+                const title = card.querySelector('.card-title').innerText.toLowerCase();[cite: 2]
+                const tag = card.querySelector('.card-tag').innerText.toLowerCase();[cite: 2]
+                let matchesSearch = title.includes(query) || tag.includes(query);[cite: 2]
+                let matchesFav = !favFilterActive || favoritos.includes(card.getAttribute('data-id'));[cite: 2]
+                card.style.display = (matchesSearch && matchesFav) ? 'block' : 'none';[cite: 2]
             });
-            actualizarVisibilidadSecciones();
+            actualizarVisibilidadSecciones();[cite: 2]
         }
 
-        function toggleFav(id) {
-            const index = favoritos.indexOf(id);
-            if (index > -1) favoritos.splice(index, 1);
-            else favoritos.push(id);
-            localStorage.setItem('sdj_favoritos', JSON.stringify(favoritos));
-            renderFavs();
-            if (favFilterActive) filterChannels();
+        function toggleFav(id) {[cite: 2]
+            const index = favoritos.indexOf(id);[cite: 2]
+            if (index > -1) favoritos.splice(index, 1);[cite: 2]
+            else favoritos.push(id);[cite: 2]
+            localStorage.setItem('sdj_favoritos', JSON.stringify(favoritos));[cite: 2]
+            renderFavs();[cite: 2]
+            if (favFilterActive) filterChannels();[cite: 2]
         }
 
-        function renderFavs() {
-            document.querySelectorAll('.card').forEach(card => {
-                const id = card.getAttribute('data-id');
-                const btn = card.querySelector('.fav-btn');
-                if (favoritos.includes(id)) btn.classList.add('is-fav');
-                else btn.classList.remove('is-fav');
+        function renderFavs() {[cite: 2]
+            document.querySelectorAll('.card').forEach(card => {[cite: 2]
+                const id = card.getAttribute('data-id');[cite: 2]
+                const btn = card.querySelector('.fav-btn');[cite: 2]
+                if (favoritos.includes(id)) btn.classList.add('is-fav');[cite: 2]
+                else btn.classList.remove('is-fav');[cite: 2]
             });
         }
 
-        function toggleFavFilter() {
-            favFilterActive = !favFilterActive;
-            const btn = document.getElementById('favFilterBtn');
-            if (favFilterActive) btn.classList.add('active');
-            else btn.classList.remove('active');
-            filterChannels();
+        function toggleFavFilter() {[cite: 2]
+            favFilterActive = !favFilterActive;[cite: 2]
+            const btn = document.getElementById('favFilterBtn');[cite: 2]
+            if (favFilterActive) btn.classList.add('active');[cite: 2]
+            else btn.classList.remove('active');[cite: 2]
+            filterChannels();[cite: 2]
         }
 
-        function actualizarVisibilidadSecciones() {
-            document.querySelectorAll('.category-section').forEach(sec => {
-                const cards = sec.querySelectorAll('.card');
-                let tieneVisibles = false;
-                cards.forEach(c => { if (c.style.display !== 'none') tieneVisibles = true; });
-                sec.style.display = tieneVisibles ? 'block' : 'none';
+        function actualizarVisibilidadSecciones() {[cite: 2]
+            document.querySelectorAll('.category-section').forEach(sec => {[cite: 2]
+                const cards = sec.querySelectorAll('.card');[cite: 2]
+                let tieneVisibles = false;[cite: 2]
+                cards.forEach(c => { if (c.style.display !== 'none') tieneVisibles = true; });[cite: 2]
+                sec.style.display = tieneVisibles ? 'block' : 'none';[cite: 2]
             });
         }
     </script>
